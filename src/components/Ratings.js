@@ -13,9 +13,8 @@ class Ratings extends Component {
   handleSubmit = () => {
     console.log("Rating = " + this.state.rating);
     let url = "";
-    if (process.env.NODE_ENV === "production")
-      url = "https://movieapp003.herokuapp.com";
-    else url = "http://localhost:8081";
+    if (process.env.NODE_ENV === "development") url = "http://localhost:8081";
+    else url = "https://movieapp003.herokuapp.com";
     axios.put(url + "/user/updateWatchedList", {
       username: this.props.state.username,
       movieId: this.props.pass.movieId,

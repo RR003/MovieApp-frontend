@@ -15,9 +15,8 @@ const EnterEmail = (props) => {
   };
 
   let urls = "";
-  if (process.env.NODE_ENV === "production")
-    urls = "https://movieapp003.herokuapp.com";
-  else urls = "http://localhost:8081";
+  if (process.env.NODE_ENV === "development") urls = "http://localhost:8081";
+  else urls = "https://movieapp003.herokuapp.com";
 
   const onSubmit = () => {
     axios.post(urls + "/user/forgotPassword", { url: email }).then((res) => {

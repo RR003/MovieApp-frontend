@@ -17,6 +17,7 @@ class Home extends Component {
   };
 
   async componentDidMount() {
+    console.log(process.env.NODE_ENV);
     let url = "";
     if (process.env.NODE_ENV === "production")
       url = "https://movieapp003.herokuapp.com";
