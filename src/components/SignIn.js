@@ -12,6 +12,7 @@ import GroupIcon from "@material-ui/icons/Group";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+require("dotenv").config();
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,7 +40,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let url = "https://movieapp003.herokuapp.com";
+
 // if (process.env.NODE_ENV === "development") url = "http://localhost:8081";
+
+console.log(url);
 
 console.log("url = " + url);
 
