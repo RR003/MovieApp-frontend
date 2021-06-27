@@ -17,6 +17,7 @@ class Contact extends Component {
 
   async componentDidMount() {
     let url = process.env.REACT_APP_URL;
+    this.setState({ url: url });
   }
 
   changeEmail = (e) => {

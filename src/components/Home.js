@@ -475,7 +475,7 @@ class Home extends Component {
                 </center>
               )}
             </div>
-            <Footer id="footer2" data={this.state.data} />
+            <Footer data={this.state.data} />
           </div>
 
           <ParticleBackground id="particles" />

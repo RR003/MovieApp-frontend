@@ -37,6 +37,7 @@ class Friends extends Component {
 
   async componentDidMount() {
     let url = process.env.REACT_APP_URL;
+    console.log("url = " + url);
     this.setState({ url: url });
     let show = false;
     let settings = {
@@ -197,6 +198,7 @@ class Friends extends Component {
     let l = 0;
     return (
       <div>
+        {console.log(this.state)}
         {!this.state.showFriends && (
           <div>
             <h2>Invalid Resource!</h2>

@@ -4,6 +4,7 @@ import axios from "axios";
 import "../MovieInfo.css";
 import Button from "@material-ui/core/Button";
 import ParticleBackground from "./ParticleBackground";
+import Footer from "./Footer";
 
 class TVInfo extends Component {
   state = {
@@ -275,6 +276,7 @@ class TVInfo extends Component {
               {console.log(this.state.commentsAndRatings)}
             </div>
           </div>
+          <Footer data={this.state.data} />
         </div>
 
         <ParticleBackground />

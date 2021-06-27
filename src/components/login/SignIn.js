@@ -15,7 +15,7 @@ import Container from "@material-ui/core/Container";
 import GoogleLogin from "react-google-login";
 require("dotenv").config();
 
-const clientId = process.env.REACT_APP_GOOGLE_API;
+const clientId = process.env.REACT_APP_GOOGLE_API_KEY;
 
 const useStyles = makeStyles((theme) => ({
   paper: {

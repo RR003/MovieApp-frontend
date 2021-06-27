@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import "../Footer.css";
 
 const Footer = (props) => (
-  <div id="footer2">
+  <div class="general-footer">
     <div id="contentInFooter">
       <div id="about">
         <Link

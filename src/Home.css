@@ -81,3 +81,12 @@
   width: 33em;
   border: ridge;
 }
+
+#ALLITEMS {
+  position: relative;
+}
+
+#bottom {
+  position: absolute;
+  bottom: 0;
+}

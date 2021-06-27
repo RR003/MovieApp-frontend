@@ -4,6 +4,7 @@ import axios from "axios";
 import "../WatchedList.css";
 import Ratings from "./Ratings";
 import ParticleBackground from "./ParticleBackground";
+import Footer from "./Footer";
 
 class WatchedList extends Component {
   constructor(props) {
@@ -166,6 +167,7 @@ class WatchedList extends Component {
               </div>
             </center>
           </div>
+          <Footer data={this.state.data} />
         </div>
         <ParticleBackground />
       </div>
