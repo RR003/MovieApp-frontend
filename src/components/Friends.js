@@ -206,20 +206,23 @@ class Friends extends Component {
         )}
         {this.state.showFriends && (
           <div>
-            <div>
+            <div id="top-friends">
               <NavBar id={this.props.location.state} />
               <div id="friendRequest">
-                <center>
-                  <TextField
-                    variant="outlined"
-                    required
-                    id="searchFriend"
-                    label="Enter Friend Username"
-                    onChange={this.changeFriendName}
-                  />
+                <center id="friend-request-size">
+                  <div>
+                    <TextField
+                      variant="outlined"
+                      required
+                      id="searchFriend"
+                      label="Enter Friend Username"
+                      onChange={this.changeFriendName}
+                    />
+                  </div>
+                  <br></br>
                   <Button
-                    color="primary"
-                    variant="outlined"
+                    color="secondary"
+                    variant="contained"
                     onClick={this.submitFriendRequest}
                   >
                     Create Friend Request
@@ -230,9 +233,11 @@ class Friends extends Component {
               <div id="friendsList">
                 {this.state.friends.length > 0 && (
                   <div>
-                    <h3>Your Friends</h3>
+                    <h3 id="friend-heading">
+                      Your Friends ({this.state.friends.length})
+                    </h3>
                     {this.state.friends.map((friend) => (
-                      <p>{friend}</p>
+                      <li>{friend}</li>
                     ))}
                   </div>
                 )}
@@ -289,7 +294,7 @@ class Friends extends Component {
 
             <div id="friend-movie-table">
               <div>
-                <h3>What your friends are watching</h3>
+                <h2>What your friends are watching</h2>
                 {this.state.movieImages.length > 0 && (
                   <div>
                     <h4>Movies</h4>
@@ -380,7 +385,7 @@ class Friends extends Component {
           </div>
         )}
         <ParticleBackground />
-        <Footer />
+        <Footer data={this.props.location.state} />
       </div>
     );
   }

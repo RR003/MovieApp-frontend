@@ -5,7 +5,7 @@
 
 #watchlist {
   padding-top: 3em;
-  border-bottom-style: ridge;
+
   border-top-style: ridge;
   border-color: #030c13;
 }
@@ -80,6 +80,7 @@
 #blurb {
   width: 33em;
   border: ridge;
+  background-color: seashell;
 }
 
 #ALLITEMS {
@@ -89,4 +90,12 @@
 #bottom {
   position: absolute;
   bottom: 0;
+}
+
+#create-account-button {
+  margin-bottom: 2em;
+}
+
+.intro {
+  margin-bottom: 3em;
 }

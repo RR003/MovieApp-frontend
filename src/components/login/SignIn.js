@@ -84,13 +84,13 @@ const SignIn = (props) => {
         password: password,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         let body = res.data;
         console.log(body);
         if (body.url.length > 30) {
           let token = body.url;
           sessionStorage.setItem("token", token);
-          console.log(token);
+          // console.log(token);
           axios.get(url + `/user/${username}`).then((res) => {
             props.history.push({
               pathname: "/",
@@ -120,44 +120,49 @@ const SignIn = (props) => {
             <Container id="totalsigninform" component="main" maxWidth="xs">
               <CssBaseline />
               <div>
-                <Typography id="signintitle" variant="h5">
+                <Typography id="signintitle" variant="h4">
                   Sign In
                 </Typography>
                 <br></br>
                 <form noValidate id="signinform">
-                  <Grid container spacing={2}>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="username"
-                        value={username}
-                        label="Enter Username"
-                        name="username"
-                        onChange={handleUsernameChange}
-                      />
+                  <div class="actual-form">
+                    <Grid container spacing={2}>
+                      <Grid item>
+                        <TextField
+                          variant="outlined"
+                          required
+                          id="username"
+                          value={username}
+                          label="Enter Username"
+                          name="username"
+                          onChange={handleUsernameChange}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          variant="outlined"
+                          required
+                          id="password"
+                          value={password}
+                          label="Enter Password"
+                          type="password"
+                          onChange={handlePasswordChange}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="password"
-                        value={password}
-                        label="Enter Password"
-                        type="password"
-                        onChange={handlePasswordChange}
-                      />
-                    </Grid>
-                  </Grid>
+                  </div>
+
                   <div>
-                    <GoogleLogin
-                      clientId={clientId}
-                      onSuccess={onSuccess}
-                      onFailure={onFailure}
-                    />
-                    <Button color="primary" onClick={forgotPassword}>
-                      Forgot Password
-                    </Button>
+                    <div class="google-sign">
+                      <GoogleLogin
+                        clientId={clientId}
+                        onSuccess={onSuccess}
+                        onFailure={onFailure}
+                      />
+                      <Button color="primary" onClick={forgotPassword}>
+                        Forgot Password
+                      </Button>
+                    </div>
                   </div>
                 </form>
 

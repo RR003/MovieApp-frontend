@@ -167,7 +167,7 @@ class WatchedList extends Component {
               </div>
             </center>
           </div>
-          <Footer data={this.state.data} />
+          <Footer data={this.props.location.state} />
         </div>
         <ParticleBackground />
       </div>

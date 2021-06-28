@@ -58,3 +58,14 @@
   background-color: #584d8b;
   margin-left: 2em;
 }
+.actual-form {
+  margin-bottom: 2em;
+}
+.google-sign {
+  margin-right: 8em;
+  margin-bottom: 2em;
+}
+
+#signintitle {
+  border-bottom: ridge;
+}

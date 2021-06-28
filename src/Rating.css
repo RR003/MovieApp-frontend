@@ -1,3 +1,12 @@
 #totalForm {
-  width: 200px;
+  width: 400px;
+  background-color: seashell;
+}
+
+#ratingButton {
+  background-color: #a38db2;
+}
+
+#the-comment {
+  width: 400px;
 }

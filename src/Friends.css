@@ -6,10 +6,16 @@
 #friendsList {
   display: inline-flex;
   padding-bottom: 5em;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 #friendsRequest {
   margin-left: 200px;
+}
+
+#friend-heading {
+  border-bottom: outset;
 }
 
 #friendreqTable {
@@ -24,13 +30,22 @@
   overflow: scroll;
 }
 
+#searchFriend {
+  background-color: seashell;
+}
+
 #friendsList {
   max-height: 330px;
   overflow: scroll;
   margin-left: 3em;
   border: ridge;
+  background-color: seashell;
 }
 
 #friend-movie-table {
   border-top: ridge;
+}
+
+#top-friends {
+  margin-bottom: 3em;
 }

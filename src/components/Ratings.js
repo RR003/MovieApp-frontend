@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import NavBar from "./NavBar";
 import "../Rating.css";
 import axios from "axios";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+
 class Ratings extends Component {
   constructor(props) {
     super(props);
@@ -50,15 +53,16 @@ class Ratings extends Component {
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-          <input
-            id="comment"
+          <TextField
+            id="the-comment"
             placeholder="Comments?"
             onChange={this.setComment}
-          ></input>
+          ></TextField>
         </form>
-        <button id="ratingButton" onClick={this.handleSubmit}>
+        <br></br>
+        <Button id="ratingButton" onClick={this.handleSubmit}>
           Submit Rating
-        </button>
+        </Button>
       </div>
     );
   }

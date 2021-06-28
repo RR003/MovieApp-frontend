@@ -49,7 +49,13 @@ const SignUp = (props) => {
   let url = process.env.REACT_APP_URL;
 
   const handleOnSubmit = () => {
-    if (password.length < 8)
+    if (firstName.length === 0) setMessage("First Name is null");
+    else if (lastName.length === 0) setMessage("Last Name is null");
+    else if (email.length === 0 || email.includes("@") === false)
+      setMessage("Email is not valid");
+    else if (username.length < 5)
+      setMessage("Username must contains at least 5 characters");
+    else if (password.length < 8)
       setMessage("Password must be at least 8 characters");
     else if (password !== confirmPassword) setMessage("Passwords do not match");
     else {
@@ -107,7 +113,7 @@ const SignUp = (props) => {
             <Container id="totalsigninform" component="main" maxWidth="xs">
               <CssBaseline />
               <div>
-                <Typography id="signintitle" variant="h5">
+                <Typography id="signintitle" variant="h4">
                   Create An Account
                 </Typography>
                 <br></br>
@@ -191,7 +197,7 @@ const SignUp = (props) => {
                   preventDefault
                   onClick={handleOnSubmit}
                 >
-                  Log In
+                  Create Account
                 </Button>
                 <Button
                   // type="submit"
@@ -201,7 +207,7 @@ const SignUp = (props) => {
                   preventDefault
                   onClick={handleSignIn}
                 >
-                  Sign In Instead
+                  Log In Instead
                 </Button>
                 <Typography style={{ margin: 7 }} variant="body1">
                   {message}

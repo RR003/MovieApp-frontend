@@ -156,14 +156,16 @@ const NavBar = (props) => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Link
-              to={{
-                pathname: "/",
-                state: data,
-              }}
-            >
-              <img src={logo} id="logo" />
-            </Link>
+            <div class="image-logo">
+              <Link
+                to={{
+                  pathname: "/",
+                  state: data,
+                }}
+              >
+                <img src={logo} id="logo" />
+              </Link>
+            </div>
 
             <Typography className={classes.title} variant="h6" noWrap>
               {props.username}

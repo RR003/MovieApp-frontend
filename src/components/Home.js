@@ -6,6 +6,7 @@ import ParticleBackground from "./ParticleBackground";
 import Button from "@material-ui/core/Button";
 import Recomendation from "./Recomendation";
 import Footer from "./Footer";
+import Carousel from "react-elastic-carousel";
 
 class Home extends Component {
   constructor(props) {
@@ -23,6 +24,9 @@ class Home extends Component {
     recommend: false,
     onMovies: true,
     onTV: false,
+    popularIds: {},
+    popularTitles: {},
+    popularImages: [],
   };
 
   recommendations = {
@@ -31,11 +35,17 @@ class Home extends Component {
     geTitles: {},
     popularIds: {},
     popularTitles: {},
-    popularImages: {},
+    popularImages: [],
     tvIds: {},
     tvImages: {},
     tvTitles: {},
   };
+  breakPoints = [
+    { width: 1, itemsToShow: 1 },
+    { width: 650, itemsToShow: 2, itemsToScroll: 2 },
+    { width: 1000, itemsToShow: 3, itemsToScroll: 3 },
+    { width: 1300, itemsToShow: 4, itemsToScroll: 4 },
+  ];
 
   changeToMovie = () => {
     this.setState({ onMovies: true });
@@ -62,6 +72,18 @@ class Home extends Component {
         token: sessionStorage.getItem("token"),
       },
     };
+
+    let res2 = await fetch(url + "/movie/popularMovies");
+    let data2 = await res2.json();
+
+    // console.log(data2);
+    this.setState({ popularIds: data2[0] });
+    this.setState({ popularTitles: data2[1] });
+    this.setState({ popularImages: data2[2] });
+
+    this.recommendations.popularIds = data2[0];
+    this.recommendations.popularTitles = data2[1];
+    this.recommendations.popularImages = data2[2];
 
     let response = await fetch(url + "/user/test", settings);
     let authData = await response.json();
@@ -119,6 +141,15 @@ class Home extends Component {
           this.setState({ tv: tvTemp });
           this.setState({ tvImages: tvImages });
           console.log("MOVIES = " + this.state.movies);
+
+          let res = await fetch(
+            this.state.url + `/movie/recommendations/${this.state.username}`
+          );
+          let data3 = await res.json();
+          console.log(data3);
+          this.recommendations.generalRecommendations = data3[0];
+          this.recommendations.geTitles = data3[1];
+          this.recommendations.geImages = data3[2];
         }
       } else {
         console.log("no log in");
@@ -167,6 +198,41 @@ class Home extends Component {
   clickImage = (e) => {
     let index = e.currentTarget.value;
     let id = this.state.movies[index].id;
+    axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
+      console.log(res.data);
+
+      this.props.history.push({
+        pathname: "/movieInfo",
+        state: {
+          newState: res.data,
+          data: this.state.data,
+        },
+      });
+    });
+  };
+
+  clickPopImage = (e) => {
+    let index = e.currentTarget.value;
+
+    let id = this.state.popularIds[index];
+    axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
+      console.log(res.data);
+
+      this.props.history.push({
+        pathname: "/movieInfo",
+        state: {
+          newState: res.data,
+          data: this.state.data,
+        },
+      });
+    });
+  };
+
+  clickPopTitle = (e) => {
+    let index = e.currentTarget.value;
+    console.log(index);
+    let id = this.state.popularIds[index];
+    // localStorage.setItem("dataForMovieInfo", this.state.data);
     axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
       console.log(res.data);
 
@@ -243,30 +309,16 @@ class Home extends Component {
   };
 
   async componentDidMount() {
-    let res3 = await fetch(
+    console.log(this.state.username);
+    /*let res3 = await fetch(
       this.state.url + `/tv/recommendations/${this.state.username}`
     );
     let data3 = await res3.json();
     console.log("data 3 = " + data3);
     this.recommendations.tvIds = data3[0];
     this.recommendations.tvTitles = data3[1];
-    this.recommendations.tvImages = data3[2];
-
-    let res = await fetch(
-      this.state.url + `/movie/recommendations/${this.state.username}`
-    );
-    let data = await res.json();
-    console.log(data);
-    this.recommendations.generalRecommendations = data[0];
-    this.recommendations.geTitles = data[1];
-    this.recommendations.geImages = data[2];
-
-    let res2 = await fetch(this.state.url + "/movie/popularMovies");
-    let data2 = await res2.json();
-    console.log(data2);
-    this.recommendations.popularIds = data2[0];
-    this.recommendations.popularTitles = data2[1];
-    this.recommendations.popularImages = data2[2];
+    this.recommendations.tvImages = data3[2];*/
+    console.log(this.state.url);
 
     try {
       document.getElementById("watchlistButton").style.background = "#346566";
@@ -274,6 +326,8 @@ class Home extends Component {
     } catch (e) {
       console.log(e);
     }
+
+    console.log("recommendations =", this.recommendations);
   }
 
   signUp = () => {
@@ -285,6 +339,7 @@ class Home extends Component {
   render() {
     let i = -1;
     let j = -1;
+    let k = 0;
     let signedIn = true;
     if (
       this.state.username === undefined ||
@@ -314,15 +369,58 @@ class Home extends Component {
                       help of Showbinge. Not only that, but also get customed
                       recomendations and connect with your friends. Just one
                       click away to create your Showbinge account and get
-                      started to binge away!
+                      started to binging away!
                     </p>
                     <Button
                       color="secondary"
                       variant="contained"
                       onClick={this.signUp}
+                      id="create-account-button"
                     >
                       Create An Account
                     </Button>
+                  </div>
+                  <div id="popMovies">
+                    <h3>Popular Movies Today</h3>
+                    <div id="carousel">
+                      <Carousel breakPoints={this.breakPoints}>
+                        {this.state.popularImages.map((image) => (
+                          <div>
+                            <div>
+                              {image !== "-1" ? (
+                                <input
+                                  type="image"
+                                  src={image}
+                                  id="image"
+                                  value={k}
+                                  onClick={this.clickPopImage}
+                                ></input>
+                              ) : (
+                                <img
+                                  id="image"
+                                  src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
+                                  value={k}
+                                ></img>
+                              )}
+                            </div>
+                            <Button
+                              id="movieButton"
+                              color="primary"
+                              variant="contained"
+                              onClick={this.clickPopTitle}
+                              value={k}
+                            >
+                              {this.state.popularTitles[k].length <= 35 &&
+                                this.state.popularTitles[k]}
+                              {this.state.popularTitles[k].length > 35 &&
+                                this.state.popularTitles[k].substring(0, 35) +
+                                  "..."}
+                            </Button>
+                            {console.log(k++)}
+                          </div>
+                        ))}
+                      </Carousel>
+                    </div>
                   </div>
                 </center>
               )}
@@ -330,7 +428,7 @@ class Home extends Component {
               {signedIn && (
                 <center>
                   <div>
-                    <center>
+                    <center class="intro">
                       <h1>
                         Welcome {this.state.data.firstName}{" "}
                         {this.state.data.lastName}
