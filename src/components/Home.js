@@ -156,6 +156,12 @@ class Home extends Component {
         console.log("oh yea");
       }
     }
+    try {
+      document.getElementById("watchlistButton").style.background = "#346566";
+      document.getElementById("showingMovies").style.background = "coral";
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   getMovie = (e) => {
@@ -320,13 +326,6 @@ class Home extends Component {
     this.recommendations.tvImages = data3[2];*/
     console.log(this.state.url);
 
-    try {
-      document.getElementById("watchlistButton").style.background = "#346566";
-      document.getElementById("showingMovies").style.background = "coral";
-    } catch (e) {
-      console.log(e);
-    }
-
     console.log("recommendations =", this.recommendations);
   }
 
@@ -379,6 +378,10 @@ class Home extends Component {
                     >
                       Create An Account
                     </Button>
+                    <p>
+                      (Please be patient when logging / signing in, since server
+                      is also deployed in heroku and takes time to start
+                    </p>
                   </div>
                   <div id="popMovies">
                     <h3>Popular Movies Today</h3>

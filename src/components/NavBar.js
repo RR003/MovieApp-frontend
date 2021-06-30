@@ -17,7 +17,7 @@ import Fade from "@material-ui/core/Fade";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 1,
+    flexGrow: 5,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -208,66 +208,70 @@ const NavBar = (props) => {
               )}
 
               {isSigninHidden && (
-                <div>
-                  <Button
-                    aria-controls="fade-menu"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                    color="secondary"
-                    id="button2"
-                  >
-                    Menu
-                  </Button>
-                  <Menu
-                    id="fade-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={open}
-                    onClose={handleClose}
-                    TransitionComponent={Fade}
-                  >
-                    <MenuItem>
-                      <Link
-                        to={{
-                          pathname: "/",
-                          state: data,
-                        }}
-                      >
-                        <Button
-                          color="secondary"
-                          id="button"
-                          type="button"
-                          className="btn btn-danger"
+                <div id="menuoptions">
+                  <div>
+                    <Button
+                      aria-controls="fade-menu"
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                      color="secondary"
+                      id="button2"
+                    >
+                      Menu
+                    </Button>
+                  </div>
+                  <div>
+                    <Menu
+                      id="fade-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={open}
+                      onClose={handleClose}
+                      TransitionComponent={Fade}
+                    >
+                      <MenuItem>
+                        <Link
+                          to={{
+                            pathname: "/",
+                            state: data,
+                          }}
                         >
-                          Home
-                        </Button>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link
-                        to={{
-                          pathname: "/friends",
-                          state: data,
-                        }}
-                      >
-                        <Button id="button1" type="button" color="secondary">
-                          Friends
-                        </Button>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link
-                        to={{
-                          pathname: "/watchedList",
-                          state: data,
-                        }}
-                      >
-                        <Button id="button1" type="button" color="secondary">
-                          WatchedList
-                        </Button>
-                      </Link>
-                    </MenuItem>
-                  </Menu>
+                          <Button
+                            color="secondary"
+                            id="button"
+                            type="button"
+                            className="btn btn-danger"
+                          >
+                            Home
+                          </Button>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          to={{
+                            pathname: "/friends",
+                            state: data,
+                          }}
+                        >
+                          <Button id="button1" type="button" color="secondary">
+                            Friends
+                          </Button>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          to={{
+                            pathname: "/watchedList",
+                            state: data,
+                          }}
+                        >
+                          <Button id="button1" type="button" color="secondary">
+                            WatchedList
+                          </Button>
+                        </Link>
+                      </MenuItem>
+                    </Menu>
+                  </div>
                 </div>
               )}
 

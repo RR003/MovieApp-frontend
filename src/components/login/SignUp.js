@@ -113,105 +113,112 @@ const SignUp = (props) => {
             <Container id="totalsigninform" component="main" maxWidth="xs">
               <CssBaseline />
               <div>
-                <Typography id="signintitle" variant="h4">
-                  Create An Account
-                </Typography>
-                <br></br>
-                <form noValidate id="signinform">
-                  <Grid container spacing={2}>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="firstName"
-                        value={firstName}
-                        label="Enter First Name"
-                        name="first name"
-                        onChange={handleFirstNameChange}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="lastName"
-                        value={lastName}
-                        label="Enter Last Name"
-                        name="last name"
-                        onChange={handleLastNameChange}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="email"
-                        value={email}
-                        type="email"
-                        label="Enter Email"
-                        name="email"
-                        onChange={handleEmailChange}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="username"
-                        value={username}
-                        label="Enter Username"
-                        name="username"
-                        onChange={handleUsernameChange}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="password"
-                        value={password}
-                        label="Enter Password"
-                        type="password"
-                        onChange={handlePasswordChange}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <TextField
-                        variant="outlined"
-                        required
-                        id="confirmpassword"
-                        value={confirmPassword}
-                        label="Confirm Password"
-                        type="password"
-                        onChange={handleConfirmPasswordChange}
-                      />
-                    </Grid>
-                  </Grid>
+                <div class="sign-up-form">
+                  <Typography id="signintitle" variant="h4">
+                    Create An Account
+                  </Typography>
                   <br></br>
-                </form>
-                <Button
-                  // type="submit"
-                  id="signinbutton"
-                  variant="contained"
-                  color="primary"
-                  preventDefault
-                  onClick={handleOnSubmit}
-                >
-                  Create Account
-                </Button>
-                <Button
-                  // type="submit"
-                  id="signupbutton"
-                  variant="contained"
-                  color="primary"
-                  preventDefault
-                  onClick={handleSignIn}
-                >
-                  Log In Instead
-                </Button>
-                <Typography style={{ margin: 7 }} variant="body1">
-                  {message}
-                </Typography>
+                  <form noValidate id="signinform">
+                    <Grid container spacing={2}>
+                      <Grid item>
+                        <TextField
+                          variant="filled"
+                          required
+                          id="firstName"
+                          value={firstName}
+                          label="Enter First Name"
+                          name="first name"
+                          onChange={handleFirstNameChange}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          variant="filled"
+                          required
+                          id="lastName"
+                          value={lastName}
+                          label="Enter Last Name"
+                          name="last name"
+                          onChange={handleLastNameChange}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          variant="filled"
+                          required
+                          id="email"
+                          value={email}
+                          type="email"
+                          label="Enter Email"
+                          name="email"
+                          onChange={handleEmailChange}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          variant="filled"
+                          required
+                          id="username"
+                          value={username}
+                          label="Enter Username"
+                          name="username"
+                          onChange={handleUsernameChange}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          variant="filled"
+                          required
+                          id="password"
+                          value={password}
+                          label="Enter Password"
+                          type="password"
+                          onChange={handlePasswordChange}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          variant="filled"
+                          required
+                          id="confirmpassword"
+                          value={confirmPassword}
+                          label="Confirm Password"
+                          type="password"
+                          onChange={handleConfirmPasswordChange}
+                        />
+                      </Grid>
+                    </Grid>
+                    <br></br>
+                    <Typography style={{ margin: 7 }} variant="body1">
+                      {message}
+                    </Typography>
+                  </form>
+                  <Button
+                    // type="submit"
+                    id="signupbutton"
+                    variant="contained"
+                    color="primary"
+                    preventDefault
+                    onClick={handleOnSubmit}
+                    fullWidth
+                  >
+                    Create Account
+                  </Button>
+                </div>
+
+                <div class="top-of-signin-button">
+                  <Button
+                    // type="submit"
+                    id="signinbutton"
+                    variant="contained"
+                    color="primary"
+                    preventDefault
+                    onClick={handleSignIn}
+                    fullWidth
+                  >
+                    Log In Instead
+                  </Button>
+                </div>
               </div>
             </Container>
           </center>

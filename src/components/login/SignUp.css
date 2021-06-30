@@ -22,3 +22,11 @@ form {
 #signUpForm {
   width: 200px;
 }*/
+.sign-up-form {
+  margin-bottom: 2em;
+}
+
+.top-of-signin-button {
+  padding-top: 1em;
+  border-top: ridge;
+}

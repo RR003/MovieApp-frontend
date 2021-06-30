@@ -75,5 +75,9 @@
 }
 
 #menuoptions {
-  display: inline-block;
+  float: left;
+}
+
+#navbar {
+  background: seashell;
 }

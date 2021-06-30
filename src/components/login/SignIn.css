@@ -46,26 +46,43 @@
 }*/
 
 #signinform {
-  margin-left: 7em;
 }
 
 #totalsigninform {
   margin-top: 7em;
   background-color: seashell;
+  padding-bottom: 3em;
+  padding-top: 2em;
 }
 
 #signupbutton {
   background-color: #584d8b;
-  margin-left: 2em;
 }
 .actual-form {
   margin-bottom: 2em;
 }
 .google-sign {
-  margin-right: 8em;
-  margin-bottom: 2em;
+  margin-bottom: 100px;
 }
 
 #signintitle {
   border-bottom: ridge;
+}
+
+.form-with-button {
+  margin-bottom: 2em;
+  border-bottom: ridge;
+}
+
+#signinbutton {
+  margin-bottom: 1em;
+}
+
+.forgot-password {
+  margin-left: 246px;
+  margin-bottom: 2em;
+}
+
+.sign-up-message {
+  margin-right: 240px;
 }

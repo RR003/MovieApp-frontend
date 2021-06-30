@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import GoogleLogin from "react-google-login";
+import { Link } from "react-router-dom";
 require("dotenv").config();
 
 const clientId = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -124,72 +125,88 @@ const SignIn = (props) => {
                   Sign In
                 </Typography>
                 <br></br>
-                <form noValidate id="signinform">
-                  <div class="actual-form">
-                    <Grid container spacing={2}>
-                      <Grid item>
-                        <TextField
-                          variant="outlined"
-                          required
-                          id="username"
-                          value={username}
-                          label="Enter Username"
-                          name="username"
-                          onChange={handleUsernameChange}
-                        />
+                <div class="form-with-button">
+                  <form noValidate id="signinform">
+                    <div></div>
+                    <div class="actual-form">
+                      <Grid>
+                        <Grid item>
+                          <TextField
+                            variant="filled"
+                            required
+                            id="username"
+                            value={username}
+                            label="Enter Username"
+                            name="username"
+                            onChange={handleUsernameChange}
+                            fullWidth
+                          />
+                        </Grid>
+                        <br></br>
+                        <Grid item>
+                          <TextField
+                            variant="filled"
+                            required
+                            id="password"
+                            value={password}
+                            label="Enter Password"
+                            type="password"
+                            onChange={handlePasswordChange}
+                            fullWidth
+                          />
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <TextField
-                          variant="outlined"
-                          required
-                          id="password"
-                          value={password}
-                          label="Enter Password"
-                          type="password"
-                          onChange={handlePasswordChange}
-                        />
-                      </Grid>
-                    </Grid>
-                  </div>
-
-                  <div>
-                    <div class="google-sign">
-                      <GoogleLogin
-                        clientId={clientId}
-                        onSuccess={onSuccess}
-                        onFailure={onFailure}
-                      />
-                      <Button color="primary" onClick={forgotPassword}>
-                        Forgot Password
-                      </Button>
                     </div>
-                  </div>
-                </form>
 
-                <Button
-                  // type="submit"
-                  id="signinbutton"
-                  variant="contained"
-                  color="primary"
-                  preventDefault
-                  onClick={handleOnSubmit}
-                >
-                  Log In
-                </Button>
-                <Button
-                  // type="submit"
-                  id="signupbutton"
-                  variant="contained"
-                  color="primary"
-                  preventDefault
-                  onClick={handleSignUp}
-                >
-                  Sign Up
-                </Button>
-                <Typography style={{ margin: 7 }} variant="body1">
-                  {message}
-                </Typography>
+                    <Typography style={{ margin: 7 }} variant="body1">
+                      {message}
+                    </Typography>
+
+                    <div>
+                      <div class="forgot-password">
+                        <Link color="secondary" onClick={forgotPassword}>
+                          Forgot your password?
+                        </Link>
+                      </div>
+                    </div>
+
+                    <Button
+                      // type="submit"
+                      id="signinbutton"
+                      variant="contained"
+                      color="primary"
+                      preventDefault
+                      onClick={handleOnSubmit}
+                      fullWidth
+                    >
+                      Log In
+                    </Button>
+
+                    <GoogleLogin
+                      class="google-sign"
+                      clientId={clientId}
+                      onSuccess={onSuccess}
+                      onFailure={onFailure}
+                    />
+                  </form>
+                </div>
               </div>
+
+              <div class="sign-up-message">
+                <p>Don't have an account?</p>
+              </div>
+
+              <Button
+                // type="submit"
+                id="signupbutton"
+                variant="contained"
+                color="primary"
+                preventDefault
+                onClick={handleSignUp}
+                fullWidth
+              >
+                Sign Up
+              </Button>
             </Container>
           </center>
         </div>
