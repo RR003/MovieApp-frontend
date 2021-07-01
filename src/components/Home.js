@@ -350,7 +350,7 @@ class Home extends Component {
 
     return (
       <div id="ALLITEMS">
-        <div>
+        <div id="without-footer">
           {this.setColor}
           <div id="all">
             <div>
@@ -380,7 +380,7 @@ class Home extends Component {
                     </Button>
                     <p>
                       (Please be patient when logging / signing in, since server
-                      is also deployed in heroku and takes time to start
+                      is also deployed in heroku and takes time to start)
                     </p>
                   </div>
                   <div id="popMovies">
@@ -576,10 +576,12 @@ class Home extends Component {
                 </center>
               )}
             </div>
-            <Footer data={this.state.data} />
           </div>
 
           <ParticleBackground id="particles" />
+        </div>
+        <div id="app-footer">
+          <Footer data={this.state.data} />
         </div>
       </div>
     );

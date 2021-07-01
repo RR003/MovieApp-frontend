@@ -4,6 +4,7 @@ import axios from "axios";
 import "../Movies.css";
 import ParticleBackground from "./ParticleBackground";
 import Button from "@material-ui/core/Button";
+import Footer from "./Footer";
 
 class Movies extends Component {
   state = {
@@ -139,127 +140,133 @@ class Movies extends Component {
     }
 
     return (
-      <div>
-        <div id="all">
-          {console.log(this.state)}
-          <NavBar id={this.state.data}></NavBar>
-          {!showMovies && (
-            <div>
-              <h1>No search results...</h1>
-              <h3>Make sure your spelling is accurate</h3>
-            </div>
-          )}
-          <br></br>
-          <center>
-            <Button id="themovieButton" onClick={this.changeToMovies}>
-              Movies
-            </Button>
-            <Button id="tvButton" onClick={this.changeToTV}>
-              TV Shows
-            </Button>
-          </center>
-
-          <center>
-            {showMovies && this.state.showMov && (
+      <div id="ALLITEMS">
+        <div id="without-footer">
+          <div id="all">
+            {console.log(this.state)}
+            <NavBar id={this.state.data}></NavBar>
+            {!showMovies && (
               <div>
-                <h3>
-                  {this.state.movies.length} Movie Search Results for "
-                  {this.state.movie}"
-                </h3>
-                {this.state.movies.map((movie) => (
-                  <div id="theMovies">
-                    <div>
-                      <center>
-                        {this.state.images[i + 1] !== "-1" ? (
-                          <input
-                            type="image"
-                            src={this.state.images[i + 1]}
-                            onClick={this.clickImage}
-                            value={i + 1}
-                            id="image"
-                          />
-                        ) : (
-                          <input
-                            type="image"
-                            id="image"
-                            src={this.state.images[i + 1]}
-                            onClick={this.clickImage}
-                            value={i + 1}
-                            src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
-                          ></input>
-                        )}
-                      </center>
-
-                      <br></br>
-                      <center>
-                        <Button
-                          id="movieTitle"
-                          value={++i}
-                          onClick={this.getMovie}
-                          color="primary"
-                          variant="contained"
-                        >
-                          {movie.length <= 50 && movie}
-                          {movie.length > 50 && movie.substring(0, 50) + "..."}
-                        </Button>
-                      </center>
-                      <br></br>
-                    </div>
-                  </div>
-                ))}
+                <h1>No search results...</h1>
+                <h3>Make sure your spelling is accurate</h3>
               </div>
             )}
-          </center>
+            <br></br>
+            <center>
+              <Button id="themovieButton" onClick={this.changeToMovies}>
+                Movies
+              </Button>
+              <Button id="tvButton" onClick={this.changeToTV}>
+                TV Shows
+              </Button>
+            </center>
 
-          <center>
-            {showMovies && this.state.showTV && (
-              <div>
-                <h3>{this.state.tvList.length} TV Show Search Results</h3>
-                {this.state.tvList.map((tv) => (
-                  <div id="theMovies">
-                    <div>
-                      <center>
-                        {this.state.tvImages[j + 1] !== "-1" ? (
-                          <input
-                            type="image"
-                            src={this.state.tvImages[j + 1]}
-                            onClick={this.clickTvImage}
-                            value={j + 1}
-                            id="image"
-                          />
-                        ) : (
-                          <input
-                            type="image"
-                            id="image"
-                            onClick={this.clickTvImage}
-                            value={j + 1}
-                            src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
-                          ></input>
-                        )}
-                      </center>
+            <center>
+              {showMovies && this.state.showMov && (
+                <div>
+                  <h3>
+                    {this.state.movies.length} Movie Search Results for "
+                    {this.state.movie}"
+                  </h3>
+                  {this.state.movies.map((movie) => (
+                    <div id="theMovies">
+                      <div>
+                        <center>
+                          {this.state.images[i + 1] !== "-1" ? (
+                            <input
+                              type="image"
+                              src={this.state.images[i + 1]}
+                              onClick={this.clickImage}
+                              value={i + 1}
+                              id="image"
+                            />
+                          ) : (
+                            <input
+                              type="image"
+                              id="image"
+                              src={this.state.images[i + 1]}
+                              onClick={this.clickImage}
+                              value={i + 1}
+                              src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
+                            ></input>
+                          )}
+                        </center>
 
-                      <br></br>
-                      <center>
-                        <Button
-                          id="movieTitle"
-                          value={++j}
-                          onClick={this.getTv}
-                          color="primary"
-                          variant="contained"
-                        >
-                          {tv.length <= 50 && tv}
-                          {tv.length > 50 && tv.substring(0, 50) + "..."}
-                        </Button>
-                      </center>
-                      <br></br>
+                        <br></br>
+                        <center>
+                          <Button
+                            id="movieTitle"
+                            value={++i}
+                            onClick={this.getMovie}
+                            color="primary"
+                            variant="contained"
+                          >
+                            {movie.length <= 50 && movie}
+                            {movie.length > 50 &&
+                              movie.substring(0, 50) + "..."}
+                          </Button>
+                        </center>
+                        <br></br>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </center>
+                  ))}
+                </div>
+              )}
+            </center>
+
+            <center>
+              {showMovies && this.state.showTV && (
+                <div>
+                  <h3>{this.state.tvList.length} TV Show Search Results</h3>
+                  {this.state.tvList.map((tv) => (
+                    <div id="theMovies">
+                      <div>
+                        <center>
+                          {this.state.tvImages[j + 1] !== "-1" ? (
+                            <input
+                              type="image"
+                              src={this.state.tvImages[j + 1]}
+                              onClick={this.clickTvImage}
+                              value={j + 1}
+                              id="image"
+                            />
+                          ) : (
+                            <input
+                              type="image"
+                              id="image"
+                              onClick={this.clickTvImage}
+                              value={j + 1}
+                              src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
+                            ></input>
+                          )}
+                        </center>
+
+                        <br></br>
+                        <center>
+                          <Button
+                            id="movieTitle"
+                            value={++j}
+                            onClick={this.getTv}
+                            color="primary"
+                            variant="contained"
+                          >
+                            {tv.length <= 50 && tv}
+                            {tv.length > 50 && tv.substring(0, 50) + "..."}
+                          </Button>
+                        </center>
+                        <br></br>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </center>
+          </div>
+          <ParticleBackground />
         </div>
-        <ParticleBackground />
+        <div id="app-footer">
+          <Footer data={this.state.data} />
+        </div>
       </div>
     );
   }

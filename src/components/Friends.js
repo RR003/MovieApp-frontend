@@ -197,195 +197,199 @@ class Friends extends Component {
     let k = 0;
     let l = 0;
     return (
-      <div>
-        {console.log(this.state)}
-        {!this.state.showFriends && (
-          <div>
-            <h2>Invalid Resource!</h2>
-          </div>
-        )}
-        {this.state.showFriends && (
-          <div>
-            <div id="top-friends">
-              <NavBar id={this.props.location.state} />
-              <div id="friendRequest">
-                <center id="friend-request-size">
-                  <div>
-                    <TextField
-                      variant="outlined"
-                      required
-                      id="searchFriend"
-                      label="Enter Friend Username"
-                      onChange={this.changeFriendName}
-                    />
-                  </div>
-                  <br></br>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    onClick={this.submitFriendRequest}
-                  >
-                    Create Friend Request
-                  </Button>
-                  <p>{this.state.message}</p>
-                </center>
-              </div>
-              <div id="friendsList">
-                {this.state.friends.length > 0 && (
-                  <div>
-                    <h3 id="friend-heading">
-                      Your Friends ({this.state.friends.length})
-                    </h3>
-                    {this.state.friends.map((friend) => (
-                      <li>{friend}</li>
-                    ))}
-                  </div>
-                )}
-                {this.state.friends.length == 0 && (
-                  <div>
-                    <p>Consider adding some friends</p>
-                  </div>
-                )}
-              </div>
+      <div id="ALLITEMS">
+        <div id="without-footer">
+          {console.log(this.state)}
+          {!this.state.showFriends && (
+            <div>
+              <h2>Invalid Resource!</h2>
+            </div>
+          )}
+          {this.state.showFriends && (
+            <div>
+              <div id="top-friends">
+                <NavBar id={this.props.location.state} />
+                <div id="friendRequest">
+                  <center id="friend-request-size">
+                    <div>
+                      <TextField
+                        variant="outlined"
+                        required
+                        id="searchFriend"
+                        label="Enter Friend Username"
+                        onChange={this.changeFriendName}
+                      />
+                    </div>
+                    <br></br>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={this.submitFriendRequest}
+                    >
+                      Create Friend Request
+                    </Button>
+                    <p>{this.state.message}</p>
+                  </center>
+                </div>
+                <div id="friendsList">
+                  {this.state.friends.length > 0 && (
+                    <div>
+                      <h3 id="friend-heading">
+                        Your Friends ({this.state.friends.length})
+                      </h3>
+                      {this.state.friends.map((friend) => (
+                        <li>{friend}</li>
+                      ))}
+                    </div>
+                  )}
+                  {this.state.friends.length == 0 && (
+                    <div>
+                      <p>Consider adding some friends</p>
+                    </div>
+                  )}
+                </div>
 
-              <div id="friendsRequest">
-                {this.state.friendRequest.length > 0 && (
-                  <div>
-                    <h3>Friend Requests</h3>
+                <div id="friendsRequest">
+                  {this.state.friendRequest.length > 0 && (
+                    <div>
+                      <h3>Friend Requests</h3>
 
-                    <table id="friendreqTable">
-                      <thead>
-                        <tr id="header">
-                          <th>Friend Username</th>
-                          <th>Accept</th>
-                          <th>Decline</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.state.friendRequest.map((friendRequest) => (
-                          <tr id="movieWatched">
-                            <td>{friendRequest}</td>
-                            <td>
-                              <Button
-                                color="primary"
-                                value={j}
-                                onClick={this.acceptedFriendRequest}
-                              >
-                                Accept
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                color="secondary"
-                                value={j++}
-                                onClick={this.deleteFriendRequest}
-                              >
-                                Decline
-                              </Button>
-                            </td>
+                      <table id="friendreqTable">
+                        <thead>
+                          <tr id="header">
+                            <th>Friend Username</th>
+                            <th>Accept</th>
+                            <th>Decline</th>
                           </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.friendRequest.map((friendRequest) => (
+                            <tr id="movieWatched">
+                              <td>{friendRequest}</td>
+                              <td>
+                                <Button
+                                  color="primary"
+                                  value={j}
+                                  onClick={this.acceptedFriendRequest}
+                                >
+                                  Accept
+                                </Button>
+                              </td>
+                              <td>
+                                <Button
+                                  color="secondary"
+                                  value={j++}
+                                  onClick={this.deleteFriendRequest}
+                                >
+                                  Decline
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div id="friend-movie-table">
+                <div>
+                  <h2>What your friends are watching</h2>
+                  {this.state.movieImages.length > 0 && (
+                    <div>
+                      <h4>Movies</h4>
+
+                      <Carousel breakPoints={this.breakPoints}>
+                        {this.state.movieImages.map((image) => (
+                          <div>
+                            <div>
+                              {image !== "-1" ? (
+                                <input
+                                  type="image"
+                                  src={image}
+                                  id="image"
+                                  onClick={this.clickImage}
+                                  value={k}
+                                ></input>
+                              ) : (
+                                <img
+                                  id="image"
+                                  src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
+                                  value={k}
+                                ></img>
+                              )}
+                            </div>
+                            <Button
+                              id="movieButton"
+                              color="primary"
+                              variant="contained"
+                              value={k}
+                              onClick={this.getMovie}
+                            >
+                              {this.state.movieTitles[k].length <= 35 &&
+                                this.state.movieTitles[k]}
+                              {this.state.movieTitles[k].length > 35 &&
+                                this.state.movieTitles[k].substring(0, 35) +
+                                  "..."}
+                            </Button>
+                            {console.log(k++)}
+                          </div>
                         ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                      </Carousel>
+                    </div>
+                  )}
+
+                  {this.state.tvImages.length > 0 && (
+                    <div>
+                      <h4>TV Shows</h4>
+                      <Carousel breakPoints={this.breakPoints}>
+                        {this.state.tvImages.map((image) => (
+                          <div>
+                            <div>
+                              {image !== "-1" ? (
+                                <input
+                                  type="image"
+                                  src={image}
+                                  id="image"
+                                  onClick={this.clickTvImage}
+                                  value={l}
+                                ></input>
+                              ) : (
+                                <img
+                                  id="image"
+                                  src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
+                                  value={l}
+                                ></img>
+                              )}
+                            </div>
+                            <Button
+                              id="movieButton"
+                              color="primary"
+                              variant="contained"
+                              value={k}
+                              onClick={this.getTv}
+                            >
+                              {this.state.tvTitles[l].length <= 35 &&
+                                this.state.tvTitles[l]}
+                              {this.state.tvTitles[l].length > 35 &&
+                                this.state.tvTitles[l].substring(0, 35) + "..."}
+                            </Button>
+                            {console.log(l++)}
+                          </div>
+                        ))}
+                      </Carousel>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-
-            <div id="friend-movie-table">
-              <div>
-                <h2>What your friends are watching</h2>
-                {this.state.movieImages.length > 0 && (
-                  <div>
-                    <h4>Movies</h4>
-
-                    <Carousel breakPoints={this.breakPoints}>
-                      {this.state.movieImages.map((image) => (
-                        <div>
-                          <div>
-                            {image !== "-1" ? (
-                              <input
-                                type="image"
-                                src={image}
-                                id="image"
-                                onClick={this.clickImage}
-                                value={k}
-                              ></input>
-                            ) : (
-                              <img
-                                id="image"
-                                src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
-                                value={k}
-                              ></img>
-                            )}
-                          </div>
-                          <Button
-                            id="movieButton"
-                            color="primary"
-                            variant="contained"
-                            value={k}
-                            onClick={this.getMovie}
-                          >
-                            {this.state.movieTitles[k].length <= 35 &&
-                              this.state.movieTitles[k]}
-                            {this.state.movieTitles[k].length > 35 &&
-                              this.state.movieTitles[k].substring(0, 35) +
-                                "..."}
-                          </Button>
-                          {console.log(k++)}
-                        </div>
-                      ))}
-                    </Carousel>
-                  </div>
-                )}
-
-                {this.state.tvImages.length > 0 && (
-                  <div>
-                    <h4>TV Shows</h4>
-                    <Carousel breakPoints={this.breakPoints}>
-                      {this.state.tvImages.map((image) => (
-                        <div>
-                          <div>
-                            {image !== "-1" ? (
-                              <input
-                                type="image"
-                                src={image}
-                                id="image"
-                                onClick={this.clickTvImage}
-                                value={l}
-                              ></input>
-                            ) : (
-                              <img
-                                id="image"
-                                src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
-                                value={l}
-                              ></img>
-                            )}
-                          </div>
-                          <Button
-                            id="movieButton"
-                            color="primary"
-                            variant="contained"
-                            value={k}
-                            onClick={this.getTv}
-                          >
-                            {this.state.tvTitles[l].length <= 35 &&
-                              this.state.tvTitles[l]}
-                            {this.state.tvTitles[l].length > 35 &&
-                              this.state.tvTitles[l].substring(0, 35) + "..."}
-                          </Button>
-                          {console.log(l++)}
-                        </div>
-                      ))}
-                    </Carousel>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-        <ParticleBackground />
-        <Footer data={this.props.location.state} />
+          )}
+          <ParticleBackground />
+        </div>
+        <div id="app-footer">
+          <Footer data={this.state.data} />
+        </div>
       </div>
     );
   }

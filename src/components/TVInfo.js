@@ -167,119 +167,123 @@ class TVInfo extends Component {
   };
   render() {
     return (
-      <div>
-        {console.log("length ==== " + this.state.commentsAndRatings.length)}
-        {console.log(this.state.commentsAndRatings)}
-        <div>
-          <NavBar id={this.state.data}></NavBar>
-          <div id="everything">
-            <center>
-              <h1>TV Show Information for {this.state.movie}</h1>
-              <h2 id="alreadyWatched">You already watched this</h2>
-              <div id="signedIn">
-                <div id="watch">
-                  <Button id="addWatchList" onClick={this.addToWatchList}>
-                    Add to Watch List
-                  </Button>
-                </div>
-
-                <div id="watchedDiv">
-                  <Button id="watched" onClick={this.addToWatchedList}>
-                    I watched this Show
-                  </Button>
-                  <h3></h3>
-                </div>
-              </div>
-
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={this.showOverview}
-              >
-                {this.state.button1test}
-              </Button>
-              {this.state.showOverview && (
-                <div id="information">
-                  <table id="movieInfoTable">
-                    <tbody>
-                      <tr>
-                        <td>Show Time</td>
-                        <td>
-                          {this.state.firstDate} - {this.state.endDate}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Overview</td>
-                        <td>{this.state.overview}</td>
-                      </tr>
-                      <tr>
-                        <td>Number of Seasons</td>
-                        <td>{this.state.seasons}</td>
-                      </tr>
-                      <tr>
-                        <td>General Rating</td>
-                        <td>{this.state.rating} / 10</td>
-                      </tr>
-                      <tr>
-                        <td>MovieSite Rating</td>
-                        {this.state.ourRating === "no ratings yet" ? (
-                          <td>this movie has not been user-rated yet</td>
-                        ) : (
-                          <td>
-                            Our Rating :{" "}
-                            {Math.round(10 * this.state.ourRating) / 10} / 5
-                          </td>
-                        )}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </center>
-
-            <br></br>
-            <div>
+      <div id="ALLITEMS">
+        <div id="without-footer">
+          {console.log("length ==== " + this.state.commentsAndRatings.length)}
+          {console.log(this.state.commentsAndRatings)}
+          <div>
+            <NavBar id={this.state.data}></NavBar>
+            <div id="everything">
               <center>
+                <h1>TV Show Information for {this.state.movie}</h1>
+                <h2 id="alreadyWatched">You already watched this</h2>
+                <div id="signedIn">
+                  <div id="watch">
+                    <Button id="addWatchList" onClick={this.addToWatchList}>
+                      Add to Watch List
+                    </Button>
+                  </div>
+
+                  <div id="watchedDiv">
+                    <Button id="watched" onClick={this.addToWatchedList}>
+                      I watched this Show
+                    </Button>
+                    <h3></h3>
+                  </div>
+                </div>
+
                 <Button
                   color="primary"
                   variant="outlined"
-                  onClick={this.showRatings}
+                  onClick={this.showOverview}
                 >
-                  {this.state.button2test}
+                  {this.state.button1test}
                 </Button>
-                {this.state.showRatings && (
-                  <div>
-                    {this.state.commentsAndRatings.length === 0 ? (
-                      <h2>There have been no ratings</h2>
-                    ) : (
-                      <table id="ratingTable">
-                        <thead>
-                          <tr id="header">
-                            <th>Rating</th>
-                            <th>Comment</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {this.state.commentsAndRatings.map((comment) => (
-                            <tr id="movieWatched" key={comment}>
-                              <td>{comment[1]} / 5</td>
-
-                              <td>{comment[0]}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
+                {this.state.showOverview && (
+                  <div id="information">
+                    <table id="movieInfoTable">
+                      <tbody>
+                        <tr>
+                          <td>Show Time</td>
+                          <td>
+                            {this.state.firstDate} - {this.state.endDate}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Overview</td>
+                          <td>{this.state.overview}</td>
+                        </tr>
+                        <tr>
+                          <td>Number of Seasons</td>
+                          <td>{this.state.seasons}</td>
+                        </tr>
+                        <tr>
+                          <td>General Rating</td>
+                          <td>{this.state.rating} / 10</td>
+                        </tr>
+                        <tr>
+                          <td>MovieSite Rating</td>
+                          {this.state.ourRating === "no ratings yet" ? (
+                            <td>this movie has not been user-rated yet</td>
+                          ) : (
+                            <td>
+                              Our Rating :{" "}
+                              {Math.round(10 * this.state.ourRating) / 10} / 5
+                            </td>
+                          )}
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </center>
-              {console.log(this.state.commentsAndRatings)}
+
+              <br></br>
+              <div>
+                <center>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    onClick={this.showRatings}
+                  >
+                    {this.state.button2test}
+                  </Button>
+                  {this.state.showRatings && (
+                    <div>
+                      {this.state.commentsAndRatings.length === 0 ? (
+                        <h2>There have been no ratings</h2>
+                      ) : (
+                        <table id="ratingTable">
+                          <thead>
+                            <tr id="header">
+                              <th>Rating</th>
+                              <th>Comment</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.commentsAndRatings.map((comment) => (
+                              <tr id="movieWatched" key={comment}>
+                                <td>{comment[1]} / 5</td>
+
+                                <td>{comment[0]}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      )}
+                    </div>
+                  )}
+                </center>
+                {console.log(this.state.commentsAndRatings)}
+              </div>
             </div>
           </div>
+
+          <ParticleBackground />
+        </div>
+        <div id="app-footer">
           <Footer data={this.state.data} />
         </div>
-
-        <ParticleBackground />
       </div>
     );
   }

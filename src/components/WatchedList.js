@@ -120,56 +120,60 @@ class WatchedList extends Component {
     let i = 0;
 
     return (
-      <div>
-        <div id="all">
-          <NavBar id={this.props.location.state}></NavBar>
-          <div id="signedOut">
-            <h1>You are not signed in to view your watched list</h1>
-          </div>
-          <div id="signedIn">
-            <center id="center">
-              <div id="left">
-                <h1>Watched List</h1>
-                <div id="Total">
-                  <table id="movieTable">
-                    <thead>
-                      <tr id="header">
-                        <th>Movie Title</th>
-                        <th>Date Watched</th>
-                        <th>Rating</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.dateInfo.map((date) => (
-                        <tr id="movieWatched" key={date}>
-                          <td>{this.state.movieTitles[i]}</td>
-
-                          <td>{date.substring(0, 10)}</td>
-                          {Number.isInteger(this.state.ratings[i]) ? (
-                            <td>{this.state.ratings[i++]} / 5</td>
-                          ) : (
-                            <td>{this.state.ratings[i++]}</td>
-                          )}
+      <div id="ALLITEMS">
+        <div id="without-footer">
+          <div id="all">
+            <NavBar id={this.props.location.state}></NavBar>
+            <div id="signedOut">
+              <h1>You are not signed in to view your watched list</h1>
+            </div>
+            <div id="signedIn">
+              <center id="center">
+                <div id="left">
+                  <h1>Watched List</h1>
+                  <div id="Total">
+                    <table id="movieTable">
+                      <thead>
+                        <tr id="header">
+                          <th>Movie Title</th>
+                          <th>Date Watched</th>
+                          <th>Rating</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <div>
-                    {this.state.showRating && (
-                      <Ratings
-                        pass={this.state}
-                        state={this.props.location.state}
-                        id="RatingsComp"
-                      ></Ratings>
-                    )}
+                      </thead>
+                      <tbody>
+                        {this.state.dateInfo.map((date) => (
+                          <tr id="movieWatched" key={date}>
+                            <td>{this.state.movieTitles[i]}</td>
+
+                            <td>{date.substring(0, 10)}</td>
+                            {Number.isInteger(this.state.ratings[i]) ? (
+                              <td>{this.state.ratings[i++]} / 5</td>
+                            ) : (
+                              <td>{this.state.ratings[i++]}</td>
+                            )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div>
+                      {this.state.showRating && (
+                        <Ratings
+                          pass={this.state}
+                          state={this.props.location.state}
+                          id="RatingsComp"
+                        ></Ratings>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </center>
+              </center>
+            </div>
           </div>
-          <Footer data={this.props.location.state} />
+          <ParticleBackground />
         </div>
-        <ParticleBackground />
+        <div id="app-footer">
+          <Footer data={this.state.data} />
+        </div>
       </div>
     );
   }
