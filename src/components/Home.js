@@ -39,6 +39,9 @@ class Home extends Component {
     tvIds: {},
     tvImages: {},
     tvTitles: {},
+    popularTvIds: {},
+    popularTvTitles: {},
+    popularTvImages: {},
   };
   breakPoints = [
     { width: 1, itemsToShow: 1 },
@@ -327,6 +330,11 @@ class Home extends Component {
     console.log(this.state.url);
 
     console.log("recommendations =", this.recommendations);
+    let res4 = await fetch(this.state.url + "/tv/popular");
+    let data4 = await res4.json();
+    this.recommendations.popularTvIds = data4[0];
+    this.recommendations.popularTvImages = data4[2];
+    this.recommendations.popularTvTitles = data4[1];
   }
 
   signUp = () => {
@@ -352,6 +360,7 @@ class Home extends Component {
       <div id="ALLITEMS">
         <div id="without-footer">
           {this.setColor}
+
           <div id="all">
             <div>
               <NavBar id={this.state.data}></NavBar>
@@ -551,7 +560,7 @@ class Home extends Component {
                                     color="primary"
                                     variant="contained"
                                   >
-                                    Delete
+                                    Remove
                                   </Button>
                                 </center>
 

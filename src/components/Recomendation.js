@@ -17,6 +17,9 @@ class Recomendation extends Component {
     tvIds: this.props.recommendations.tvIds,
     tvImages: this.props.recommendations.tvImages,
     tvTitles: this.props.recommendations.tvTitles,
+    popularTvIds: this.props.recommendations.popularTvIds,
+    popularTvTitles: this.props.recommendations.popularTvTitles,
+    popularTvImages: this.props.recommendations.popularTvImages,
   };
 
   breakPoints = [
@@ -113,13 +116,43 @@ class Recomendation extends Component {
     });
   };
 
+  clickPopTvImage = (e) => {
+    let index = e.currentTarget.value;
+    // console.log(index);
+    let id = this.state.popularTvIds[index];
+    axios.get(this.props.url + `/tv/get/${id}`).then((res) => {
+      this.props.history.push({
+        pathname: "/TvInfo",
+        state: {
+          newState: res.data,
+          data: this.props.userData,
+        },
+      });
+    });
+  };
+
   getTvTitle = (e) => {
     // console.log(e);
     let index = e.currentTarget.value;
     // console.log(index);
     let id = this.state.tvIds[index];
     // localStorage.setItem("dataForMovieInfo", this.state.data);
-    axios.get(this.props.url + `/movie/get/${id}`).then((res) => {
+    axios.get(this.props.url + `/tv/get/${id}`).then((res) => {
+      this.props.history.push({
+        pathname: "/TvInfo",
+        state: {
+          newState: res.data,
+          data: this.props.userData,
+        },
+      });
+    });
+  };
+
+  getPopTv = (e) => {
+    let index = e.currentTarget.value;
+    // console.log(index);
+    let id = this.state.popularTvIds[index];
+    axios.get(this.props.url + `/tv/get/${id}`).then((res) => {
       this.props.history.push({
         pathname: "/TvInfo",
         state: {
@@ -134,6 +167,7 @@ class Recomendation extends Component {
     let i = 0;
     let j = 0;
     let k = 0;
+    let l = 0;
     console.log(this.props.recommendations);
     return (
       <div>
@@ -180,6 +214,8 @@ class Recomendation extends Component {
             </div>
           </div>
         )}
+        <br></br>
+        <h3>TV show recommendations will be coming soon!</h3>
         {/*{this.state.tvImages.length > 0 && (
           <div>
             <h3>TV Show Recomendations Customed For You</h3>
@@ -257,6 +293,48 @@ class Recomendation extends Component {
                       this.state.popularTitles[j].substring(0, 35) + "..."}
                   </Button>
                   {console.log(j++)}
+                </div>
+              ))}
+            </Carousel>
+          </div>
+        </div>
+
+        <div id="popMovies">
+          <h3>Popular TV Shows Today</h3>
+          <div id="carousel">
+            <Carousel breakPoints={this.breakPoints}>
+              {this.state.popularTvImages.map((image) => (
+                <div>
+                  <div>
+                    {image !== "-1" ? (
+                      <input
+                        type="image"
+                        src={image}
+                        id="image"
+                        onClick={this.clickPopTvImage}
+                        value={l}
+                      ></input>
+                    ) : (
+                      <img
+                        id="image"
+                        src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
+                        value={l}
+                      ></img>
+                    )}
+                  </div>
+                  <Button
+                    id="movieButton"
+                    color="primary"
+                    variant="contained"
+                    value={l}
+                    onClick={this.getPopTv}
+                  >
+                    {this.state.popularTvTitles[l].length <= 35 &&
+                      this.state.popularTvTitles[l]}
+                    {this.state.popularTvTitles[l].length > 35 &&
+                      this.state.popularTvTitles[l].substring(0, 35) + "..."}
+                  </Button>
+                  {console.log(l++)}
                 </div>
               ))}
             </Carousel>

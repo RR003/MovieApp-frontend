@@ -29,14 +29,18 @@ class Contact extends Component {
   };
 
   submit = () => {
-    axios
-      .post(this.state.url + "/user/submit", {
-        email: this.state.email,
-        password: this.state.problem,
-      })
-      .then((res) => {
-        this.setState({ message: "message is sent" });
-      });
+    if (!this.state.email.includes("@")) {
+      this.setState({ message: "not valid email" });
+    } else {
+      axios
+        .post(this.state.url + "/user/submit", {
+          email: this.state.email,
+          password: this.state.problem,
+        })
+        .then((res) => {
+          this.setState({ message: "message is sent" });
+        });
+    }
   };
 
   render() {
@@ -65,6 +69,7 @@ class Contact extends Component {
           label="Enter Suggestion/Problem"
           onChange={this.changeProblem}
         />
+        <br></br>
         <br></br>
         <Button onClick={this.submit} color="primary">
           Submit

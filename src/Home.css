@@ -72,7 +72,7 @@
 }
 
 #blurb {
-  width: 33em;
+  max-width: 35em;
   border: ridge;
   background-color: seashell;
 }
@@ -113,5 +113,5 @@
   bottom: 0;
   position: relative;
   height: 80px;
-  background-color: rgb(223, 216, 199);
+  background-color: rgb(238, 235, 230);
 }
