@@ -1,292 +1,223 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import NavBar from "./NavBar";
-import axios from "axios";
 import "../MovieInfo.css";
 import Button from "@material-ui/core/Button";
 import ParticleBackground from "./ParticleBackground";
 import Footer from "./Footer";
+import { addToWatchListTv, addToWatchedList } from "../actions/data";
+import { deleteTvWatchList } from "../actions/movie";
 
-class TVInfo extends Component {
-  state = {
-    id: this.props.location.state.newState.id,
-    movie: this.props.location.state.newState.title,
-    overview: this.props.location.state.newState.overview,
-    firstDate: this.props.location.state.newState.startingDate,
-    endDate: this.props.location.state.newState.endDate,
-    rating: this.props.location.state.newState.rating,
-    seasons: this.props.location.state.newState.seasons,
-    commentsAndRatings: "",
-    button1test: "show overview",
-    button2test: "show ratings and comments",
-    showOverview: false,
-    showRatings: false,
-    url: "",
-    data: this.props.location.state.data,
-  };
+const TVInfo = (props) => {
+  const user2 = useSelector((state) => state.user);
+  let user = [];
+  if (user2.length > 0) {
+    user = user2[0];
+  }
+  const tvInfo = props.location.state.newState;
+  const commentsAndRatings = props.location.state.commentAndRatings;
+  const ourRating = props.location.state.ourRating;
+  const dispatch = useDispatch();
+  console.log(tvInfo);
 
-  async componentWillMount() {
-    let url = process.env.REACT_APP_URL;
+  const [message, setMessage] = useState("");
 
-    this.setState({ url: url });
-    let ratings = await fetch(url + `/tv/rating/${this.state.id}`);
-    ratings = await ratings.json();
-    if (ratings === -1) {
-      ratings = "no ratings yet";
-    }
-    this.setState({ ourRating: ratings });
-    let commentsAndRatings = await fetch(
-      url + `/tv/comment&rating/${this.state.id}`
-    );
-    commentsAndRatings = await commentsAndRatings.json();
-    this.setState({ commentsAndRatings: commentsAndRatings });
-    // console.log(commentsAndRatings);
-    if (this.state.data !== {} && this.state.data !== undefined) {
-      // console.log(this.state.data);
-      if (
-        this.state.data.username === undefined ||
-        this.state.data.username === null
-      ) {
-        document.getElementById("signedIn").style.visibility = "hidden";
+  useEffect(() => {
+    if (user2.length === 0) {
+      setMessage("Create an account to add to your watch/watched lists");
+      document.getElementById("watch").style.visibility = "hidden";
+      document.getElementById("watched").style.visibility = "hidden";
+    } else {
+      if (user2[0].tvWatchList.includes(tvInfo.id)) {
+        setMessage("Tv show is currently in your watchlist");
+        document.getElementById("watch").style.visibility = "hidden";
       } else {
-        console.log(this.state.data.watchedList);
-        let isThere = false;
-        for (let i = 0; i < this.state.data.watchedList.length; i++) {
-          if (
-            this.state.data.watchedList[i].movieId === this.state.id &&
-            this.state.data.watchedList[i].isMovie === "no"
-          ) {
+        for (let i = 0; i < user2[0].watchedList.length; i++) {
+          console.log(user2[0].watchedList[i].movieId);
+          if (user2[0].watchedList[i].movieId === tvInfo.id) {
+            setMessage("You already watched this show");
             document.getElementById("watch").style.visibility = "hidden";
             document.getElementById("watched").style.visibility = "hidden";
-            console.log("1");
-            isThere = true;
-            break;
-          }
-        }
-        if (isThere) {
-          document.getElementById("alreadyWatched").style.visibility =
-            "visible";
-        }
-
-        for (let i = 0; i < this.state.data.tvWatchList.length; i++) {
-          if (this.state.data.tvWatchList[i] === this.state.id) {
-            document.getElementById("watch").style.visibility = "hidden";
-            console.log("2");
-            break;
           }
         }
       }
     }
-  }
+  });
 
-  addToWatchList = () => {
-    // console.log(this.state.data.watchist);
-    if (this.state.data.username === undefined) {
-      console.log("please log in");
-    } else {
-      let list = this.state.data.tvWatchList;
-      let isThere = false;
-      //
-      for (let i = 0; i < list.length; i++) {
-        if (list[i] === this.state.id) {
-          isThere = true;
-          break;
-        }
-      }
-      if (isThere) {
-        this.setState({ show: true });
-      } else {
-        axios.post(this.state.url + "/user/addWatchList", {
-          username: this.state.data.username,
-          movieId: this.state.id,
-          isMovie: "no",
-        });
-        setTimeout(this.goToHome, 100);
-      }
-    }
+  const [showOverview, setShowOverview] = useState(false);
+  const [showRatings, setShowRatings] = useState(false);
+
+  const [button1test, setButton1] = useState("show overview");
+  const [button2test, setButton2] = useState("show comments and ratings");
+
+  const [tvWatchLists, setTvWatchLists] = useState(
+    useSelector((state) => state.tvWatchlist)
+  );
+
+  if (user2.length > 0) user = user2[0];
+  const addToWatchList = () => {
+    dispatch(addToWatchListTv(user.username, tvInfo.id));
+    setMessage("Show has been added to your watchlist");
+    document.getElementById("watch").style.visibility = "hidden";
   };
-
-  addToWatchedList = () => {
-    console.log(this.state.url);
-    let list = this.state.data.tvWatchList;
-    for (let i = 0; i < list.length; i++) {
-      if (this.state.id === list[i]) {
-        axios.delete(this.state.url + "/user/deleteWatchList", {
-          data: {
-            username: this.state.data.username,
-            movieId: this.state.id,
-            isMovie: "no",
-          },
-        });
+  const addToWatchedListFunc = async () => {
+    let watchlist = user.watchList;
+    let movielist = tvWatchLists[0];
+    let index = -1;
+    for (let i = 0; i < movielist.length; i++) {
+      if (tvInfo.id === movielist[i].id) {
+        index = i;
+        await dispatch(deleteTvWatchList(tvInfo.id, user.username));
       }
     }
-
-    axios.post(this.state.url + "/user/addWatchedList", {
-      username: this.state.data.username,
-      movieId: this.state.id,
-      dateCreated: new Date(),
-      rating: -1,
-      comment: "",
-      isMovie: "no",
-    });
-
-    setTimeout(this.goToWatchList, 100);
+    let movie1 = tvWatchLists[0];
+    let movie2 = tvWatchLists[1];
+    movie1.splice(index, 1);
+    movie2.splice(index, 1);
+    setTvWatchLists([movie1, movie2]);
+    await dispatch(addToWatchedList(user.username, tvInfo.id, "no"));
+    setMessage("TV Show has been added to your watched list");
+    document.getElementById("watch").style.visibility = "hidden";
+    document.getElementById("watched").style.visibility = "hidden";
   };
 
-  goToWatchList = () => {
-    this.props.history.push({
-      pathname: "/watchedList",
-      state: this.state.data,
-    });
-  };
-
-  goToHome = () => {
-    this.props.history.push({
-      pathname: "/",
-      state: this.state.data,
-    });
-  };
-
-  showOverview = () => {
-    if (this.state.showOverview === false) {
-      this.setState({ showOverview: true });
-      this.setState({ button1test: "remove overview" });
+  const showOverviewFunction = () => {
+    if (showOverview === false) {
+      setShowOverview(true);
+      setButton1("remove overview");
     } else {
-      this.setState({ showOverview: false });
-      this.setState({ button1test: "show overview" });
+      setShowOverview(false);
+      setButton1("show overview");
     }
   };
 
-  showRatings = () => {
-    if (this.state.showRatings === false) {
-      this.setState({ showRatings: true });
-      this.setState({ button2test: "remove ratings and comments" });
+  const showRatingsFunction = () => {
+    if (showRatings === false) {
+      setShowRatings(true);
+      setButton2("remove comments and ratings");
     } else {
-      this.setState({ showRatings: false });
-      this.setState({ button2test: "show ratings and comments" });
+      setShowRatings(false);
+      setButton2("show comments and ratings");
     }
   };
-  render() {
-    return (
-      <div id="ALLITEMS">
-        <div id="without-footer">
-          {console.log("length ==== " + this.state.commentsAndRatings.length)}
-          {console.log(this.state.commentsAndRatings)}
-          <div>
-            <NavBar id={this.state.data}></NavBar>
-            <div id="everything">
-              <center>
-                <h1>TV Show Information for {this.state.movie}</h1>
-                <h2 id="alreadyWatched">You already watched this</h2>
-                <div id="signedIn">
-                  <div id="watch">
-                    <Button id="addWatchList" onClick={this.addToWatchList}>
-                      Add to Watch List
-                    </Button>
-                  </div>
 
-                  <div id="watchedDiv">
-                    <Button id="watched" onClick={this.addToWatchedList}>
-                      I watched this Show
-                    </Button>
-                    <h3></h3>
-                  </div>
+  return (
+    <div id="ALLITEMS">
+      <div id="without-footer">
+        <div>
+          <NavBar id={user}></NavBar>
+          <div id="everything">
+            <center>
+              <h1>TV Show Information for {tvInfo.title}</h1>
+              <h2>{message}</h2>
+
+              <div id="signedIn">
+                <div id="watch">
+                  <Button id="addWatchList" onClick={addToWatchList}>
+                    Add to Watch List
+                  </Button>
                 </div>
 
+                <div id="watchedDiv">
+                  <Button id="watched" onClick={addToWatchedListFunc}>
+                    I watched this show
+                  </Button>
+                  <h3></h3>
+                </div>
+              </div>
+
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={showOverviewFunction}
+              >
+                {button1test}
+              </Button>
+              {showOverview && (
+                <div id="information">
+                  <table id="movieInfoTable">
+                    <tbody>
+                      <tr>
+                        <td>Show Time</td>
+                        <td>
+                          {tvInfo.startingDate} - {tvInfo.endDate}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Overview</td>
+                        <td>{tvInfo.overview}</td>
+                      </tr>
+                      <tr>
+                        <td>Number of Seasons</td>
+                        <td>{tvInfo.seasons}</td>
+                      </tr>
+                      <tr>
+                        <td>General Rating</td>
+                        <td>{tvInfo.rating} / 10</td>
+                      </tr>
+                      <tr>
+                        <td>MovieSite Rating</td>
+                        {ourRating === -1 ? (
+                          <td>this movie has not been user-rated yet</td>
+                        ) : (
+                          <td>
+                            Our Rating : {Math.round(10 * ourRating) / 10} / 5
+                          </td>
+                        )}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </center>
+
+            <br></br>
+            <div>
+              <center>
                 <Button
                   color="primary"
                   variant="outlined"
-                  onClick={this.showOverview}
+                  onClick={showRatingsFunction}
                 >
-                  {this.state.button1test}
+                  {button2test}
                 </Button>
-                {this.state.showOverview && (
-                  <div id="information">
-                    <table id="movieInfoTable">
-                      <tbody>
-                        <tr>
-                          <td>Show Time</td>
-                          <td>
-                            {this.state.firstDate} - {this.state.endDate}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Overview</td>
-                          <td>{this.state.overview}</td>
-                        </tr>
-                        <tr>
-                          <td>Number of Seasons</td>
-                          <td>{this.state.seasons}</td>
-                        </tr>
-                        <tr>
-                          <td>General Rating</td>
-                          <td>{this.state.rating} / 10</td>
-                        </tr>
-                        <tr>
-                          <td>MovieSite Rating</td>
-                          {this.state.ourRating === "no ratings yet" ? (
-                            <td>this movie has not been user-rated yet</td>
-                          ) : (
-                            <td>
-                              Our Rating :{" "}
-                              {Math.round(10 * this.state.ourRating) / 10} / 5
-                            </td>
-                          )}
-                        </tr>
-                      </tbody>
-                    </table>
+                {showRatings && (
+                  <div>
+                    {commentsAndRatings.length === 0 ? (
+                      <h2>There have been no ratings</h2>
+                    ) : (
+                      <table id="ratingTable">
+                        <thead>
+                          <tr id="header">
+                            <th>Rating</th>
+                            <th>Comment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {commentsAndRatings.map((comment) => (
+                            <tr id="movieWatched" key={comment}>
+                              <td>{comment[1]} / 5</td>
+
+                              <td>{comment[0]}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
                   </div>
                 )}
               </center>
-
-              <br></br>
-              <div>
-                <center>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    onClick={this.showRatings}
-                  >
-                    {this.state.button2test}
-                  </Button>
-                  {this.state.showRatings && (
-                    <div>
-                      {this.state.commentsAndRatings.length === 0 ? (
-                        <h2>There have been no ratings</h2>
-                      ) : (
-                        <table id="ratingTable">
-                          <thead>
-                            <tr id="header">
-                              <th>Rating</th>
-                              <th>Comment</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.state.commentsAndRatings.map((comment) => (
-                              <tr id="movieWatched" key={comment}>
-                                <td>{comment[1]} / 5</td>
-
-                                <td>{comment[0]}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      )}
-                    </div>
-                  )}
-                </center>
-                {console.log(this.state.commentsAndRatings)}
-              </div>
             </div>
           </div>
+        </div>
 
-          <ParticleBackground />
-        </div>
-        <div id="app-footer">
-          <Footer data={this.state.data} />
-        </div>
+        <ParticleBackground />
       </div>
-    );
-  }
-}
+      <div id="app-footer">
+        <Footer data={user} />
+      </div>
+    </div>
+  );
+};
 
 export default TVInfo;

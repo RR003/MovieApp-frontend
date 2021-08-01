@@ -95,16 +95,19 @@ const NavBar = (props) => {
   }
 
   let isSigninHidden = false;
-
-  if (
-    data.username !== undefined &&
-    data.username !== null &&
-    sessionStorage.getItem("token") !== null
-  ) {
-    // console.log("person is signed in");
-    isSigninHidden = true;
-  } else {
-    // console.log("person is not signed in");
+  try {
+    if (
+      data.username !== undefined &&
+      data.username !== null &&
+      sessionStorage.getItem("token") !== null
+    ) {
+      // console.log("person is signed in");
+      isSigninHidden = true;
+    } else {
+      // console.log("person is not signed in");
+    }
+  } catch (error) {
+    isSigninHidden = false;
   }
 
   const onKeyUp = (event) => {
@@ -121,23 +124,27 @@ const NavBar = (props) => {
   const getMovieFunction = () => {
     console.log("getting movie");
     axios
-      .get(url + `/movie/${movieTitle}`)
+      .get(url + `/movie/${movieTitle}/1`)
       .then((res) => {
-        console.log(data);
+        console.log(res);
         console.log(JSON.stringify(res.data[0]));
         console.log(JSON.stringify(res.data[1]));
         localStorage.setItem("list", JSON.stringify(res.data[0]));
         localStorage.setItem("images", JSON.stringify(res.data[1]));
+        localStorage.setItem("total_pages", JSON.stringify(res.data[2][0]));
         localStorage.setItem("title", movieTitle);
         localStorage.setItem("data", JSON.stringify(data));
-        console.log(localStorage.getItem("list"));
-        console.log(localStorage.getItem("title"));
-        console.log(JSON.parse(localStorage.getItem("data")).username);
+        localStorage.setItem("pageNumber", 1);
       })
       .then(
-        axios.get(url + `/tv/${movieTitle}`).then((res) => {
+        axios.get(url + `/tv/${movieTitle}/1`).then((res) => {
           localStorage.setItem("tvList", JSON.stringify(res.data[0]));
           localStorage.setItem("tvImages", JSON.stringify(res.data[1]));
+          localStorage.setItem(
+            "tv_total_pages",
+            JSON.stringify(res.data[2][0])
+          );
+          localStorage.setItem("tvPageNumber", 1);
           window.location.href = "/movies";
         })
       );

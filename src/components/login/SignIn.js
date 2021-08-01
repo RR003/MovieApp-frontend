@@ -14,6 +14,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import GoogleLogin from "react-google-login";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signIn, signup, signInWithGoogle } from "../../actions/auth";
+import { useHistory } from "react-router-dom";
 require("dotenv").config();
 
 const clientId = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -45,10 +48,12 @@ const useStyles = makeStyles((theme) => ({
 
 let url = process.env.REACT_APP_URL;
 
-const SignIn = (props) => {
+const SignIn = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [message, setMessage] = React.useState("");
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -60,26 +65,26 @@ const SignIn = (props) => {
 
   const onSuccess = (googleUser) => {
     var id_token = googleUser.getAuthResponse().id_token;
-    axios
-      .post(url + "/user/googleSignIn", {
-        url: id_token,
-      })
-      .then((res) => {
-        sessionStorage.setItem("token", res.data.verificationCode);
-        // console.log(res.data.verificationCode);
-        props.history.push({
-          pathname: "/",
-          state: res.data,
-        });
-      });
+    dispatch(signInWithGoogle(id_token, history));
   };
 
   const onFailure = (res) => {
     console.log("this sadly didnt work");
   };
 
-  const handleOnSubmit = () => {
-    axios
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    let formData = {
+      username: username,
+      password: password,
+    };
+    dispatch(signIn(formData, history)).then((res) =>
+      res.length > 30 ? setMessage("valid") : setMessage(res)
+    );
+    // console.log(response);
+    // let timeout = setTimeout(settingMessage("Login Unsuccessful"), 5000);
+
+    /*axios
       .post(url + `/user/login/`, {
         username: username,
         password: password,
@@ -101,7 +106,7 @@ const SignIn = (props) => {
         } else {
           setMessage(body.url);
         }
-      });
+      });*/
   };
 
   const handleSignUp = () => {

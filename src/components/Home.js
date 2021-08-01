@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
 import "../Home.css";
@@ -7,363 +7,191 @@ import Button from "@material-ui/core/Button";
 import Recomendation from "./Recomendation";
 import Footer from "./Footer";
 import Carousel from "react-elastic-carousel";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../actions/data";
+import {
+  deleteMovieWatchList,
+  deleteTvWatchList,
+  getPopularMovies,
+} from "../actions/movie";
+import { goToThisMovie, goToThisTv } from "../actions/recs";
+import { getMovieInfo, getMovieImage } from "../actions/movie";
+import PopularMoviesRec from "./AllRecs";
+import movieWatchlist from "../reducers/movieWatchlist";
+import { useHistory } from "react-router-dom";
+import { checkToken } from "../actions/auth";
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-  state = {
-    username: "",
-    data: {},
-    movies: [],
-    images: [],
-    tv: [],
-    tvImages: [],
-    url: "",
-    watchlist: true,
-    recommend: false,
-    onMovies: true,
-    onTV: false,
-    popularIds: {},
-    popularTitles: {},
-    popularImages: [],
-  };
-
-  recommendations = {
-    generalRecommendations: {},
-    geImages: {},
-    geTitles: {},
-    popularIds: {},
-    popularTitles: {},
-    popularImages: [],
-    tvIds: {},
-    tvImages: {},
-    tvTitles: {},
-    popularTvIds: {},
-    popularTvTitles: {},
-    popularTvImages: {},
-  };
-  breakPoints = [
+const Home = (props) => {
+  let breakPoints = [
     { width: 1, itemsToShow: 1 },
     { width: 650, itemsToShow: 2, itemsToScroll: 2 },
     { width: 1000, itemsToShow: 3, itemsToScroll: 3 },
     { width: 1300, itemsToShow: 4, itemsToScroll: 4 },
   ];
 
-  changeToMovie = () => {
-    this.setState({ onMovies: true });
-    this.setState({ onTV: false });
+  const dispatch = useDispatch();
+  if (sessionStorage.getItem("token") !== null) dispatch(checkToken());
+
+  const history = useHistory();
+
+  const user2 = useSelector((state) => state.user);
+  const [movieWatchLists, setMovieWatchLists] = useState(
+    useSelector((state) => state.movieWatchlist)
+  );
+  console.log(movieWatchLists);
+
+  const [tvWatchLists, setTvWatchLists] = useState(
+    useSelector((state) => state.tvWatchlist)
+  );
+
+  let user = [];
+  try {
+    console.log(user2);
+    if (user2.length > 0) {
+      user = user2[0];
+    } else {
+      localStorage.clear();
+      sessionStorage.clear();
+    }
+  } catch (error) {
+    localStorage.clear();
+    sessionStorage.clear();
+    console.log(user2);
+  }
+
+  const [isWL, setIsWL] = useState(true);
+  const [isRec, setRec] = useState(false);
+
+  // console.log(movieWatchListImages);
+
+  let watchlist = true;
+  let recommend = false;
+  const [onMovies, setOnMovies] = useState(true);
+  const [onTV, setOnTV] = useState(false);
+
+  const changeToMovie = () => {
+    setOnTV(false);
+    setOnMovies(true);
+
     document.getElementById("showingMovies").style.background = "coral";
     document.getElementById("showingTv").style.background = "";
   };
 
-  changeToTv = () => {
-    this.setState({ onMovies: false });
-    this.setState({ onTV: true });
+  const changeToTv = () => {
+    console.log("changing to tv");
+    setOnMovies(false);
+    setOnTV(true);
+
+    console.log(onMovies, onTV);
     document.getElementById("showingTv").style.background = "coral";
     document.getElementById("showingMovies").style.background = "";
   };
 
-  async componentWillMount() {
-    let url = process.env.REACT_APP_URL;
-    this.setState({ url: url });
-    console.log(this.props.location.state);
-    let show = false;
-    let settings = {
-      method: "GET",
-      headers: {
-        token: sessionStorage.getItem("token"),
-      },
-    };
-
-    let res2 = await fetch(url + "/movie/popularMovies");
-    let data2 = await res2.json();
-
-    // console.log(data2);
-    this.setState({ popularIds: data2[0] });
-    this.setState({ popularTitles: data2[1] });
-    this.setState({ popularImages: data2[2] });
-
-    this.recommendations.popularIds = data2[0];
-    this.recommendations.popularTitles = data2[1];
-    this.recommendations.popularImages = data2[2];
-
-    let response = await fetch(url + "/user/test", settings);
-    let authData = await response.json();
-    if (authData.url === "valid") {
-      this.setState({ showFriends: true });
-      show = true;
-    }
-    if (show) {
-      try {
-        if (this.props.location.state.username === undefined) {
-          this.props.location.state = undefined;
-        }
-      } catch (e) {
-        console.log("whoops");
-      }
-      if (this.props.location.state !== undefined) {
-        console.log(this.props.location.state.username);
-        this.setState({ username: this.props.location.state.username });
-        let res = await fetch(
-          url + `/user/${this.props.location.state.username}`
-        );
-        let body = await res.json();
-        console.log(body);
-        this.setState({ data: body });
-        if (this.state.data.firstName !== undefined) {
-          let moviesTemp = [];
-          let imagesTemp = [];
-          let tvTemp = [];
-          let tvImages = [];
-          console.log(this.state.data.watchList);
-          for (var i = 0; i < this.state.data.watchList.length; i++) {
-            let id = this.state.data.watchList[i];
-            let response = await fetch(url + `/movie/get/${id}`);
-            let response2 = await fetch(url + `/movie/getImage/${id}`);
-            let data = await response.json();
-            let data2 = await response2.json();
-            moviesTemp.push(data);
-            imagesTemp.push(data2.url);
-          }
-          // console.log("no problems");
-          for (let j = 0; j < this.state.data.tvWatchList.length; j++) {
-            let id = this.state.data.tvWatchList[j];
-            console.log(id);
-            let response = await fetch(url + `/tv/get/${id}`);
-            let response2 = await fetch(url + `/tv/getImage/${id}`);
-            let data = await response.json();
-            let data2 = await response2.json();
-            tvTemp.push(data);
-            tvImages.push(data2.url);
-          }
-          // console.log(moviesTemp);
-          console.log(imagesTemp);
-          this.setState({ movies: moviesTemp });
-          this.setState({ images: imagesTemp });
-          this.setState({ tv: tvTemp });
-          this.setState({ tvImages: tvImages });
-          console.log("MOVIES = " + this.state.movies);
-
-          let res = await fetch(
-            this.state.url + `/movie/recommendations/${this.state.username}`
-          );
-          let data3 = await res.json();
-          console.log(data3);
-          this.recommendations.generalRecommendations = data3[0];
-          this.recommendations.geTitles = data3[1];
-          this.recommendations.geImages = data3[2];
-        }
-      } else {
-        console.log("no log in");
-        console.log("oh yea");
-      }
-    }
-    try {
-      document.getElementById("watchlistButton").style.background = "#346566";
-      document.getElementById("showingMovies").style.background = "coral";
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  getMovie = (e) => {
-    // console.log(e);
+  const getMovie = (e) => {
     let index = e.currentTarget.value;
-    // console.log(index);
-    let id = this.state.movies[index].id;
-    // localStorage.setItem("dataForMovieInfo", this.state.data);
-    axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
-      console.log(res.data);
-
-      this.props.history.push({
-        pathname: "/movieInfo",
-        state: {
-          newState: res.data,
-          data: this.state.data,
-        },
-      });
-    });
+    let id = user.watchList[index];
+    dispatch(goToThisMovie(id, history));
   };
 
-  getTv = (e) => {
+  const getTv = (e) => {
+    console.log(user.tvWatchList);
     let index = e.currentTarget.value;
-    // console.log(index);
-    let id = this.state.tv[index].id;
-    // localStorage.setItem("dataForMovieInfo", this.state.data);
-    axios.get(this.state.url + `/tv/get/${id}`).then((res) => {
-      console.log(res.data);
-
-      this.props.history.push({
-        pathname: "/TvInfo",
-        state: {
-          newState: res.data,
-          data: this.state.data,
-        },
-      });
-    });
+    let id = user.tvWatchList[index];
+    dispatch(goToThisTv(id, history));
   };
 
-  clickImage = (e) => {
+  const clickImage = (e) => {
     let index = e.currentTarget.value;
-    let id = this.state.movies[index].id;
-    axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
-      console.log(res.data);
-
-      this.props.history.push({
-        pathname: "/movieInfo",
-        state: {
-          newState: res.data,
-          data: this.state.data,
-        },
-      });
-    });
+    console.log(user.tvWatchList);
+    let id = user.watchList[index];
+    dispatch(goToThisMovie(id, history));
   };
 
-  clickPopImage = (e) => {
+  const clickTvImage = (e) => {
     let index = e.currentTarget.value;
-
-    let id = this.state.popularIds[index];
-    axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
-      console.log(res.data);
-
-      this.props.history.push({
-        pathname: "/movieInfo",
-        state: {
-          newState: res.data,
-          data: this.state.data,
-        },
-      });
-    });
+    if (index === undefined) index = e.target.value;
+    console.log(e);
+    let id = user.tvWatchList[index];
+    dispatch(goToThisTv(id, history));
   };
 
-  clickPopTitle = (e) => {
-    let index = e.currentTarget.value;
-    console.log(index);
-    let id = this.state.popularIds[index];
-    // localStorage.setItem("dataForMovieInfo", this.state.data);
-    axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
-      console.log(res.data);
-
-      this.props.history.push({
-        pathname: "/movieInfo",
-        state: {
-          newState: res.data,
-          data: this.state.data,
-        },
-      });
-    });
-  };
-
-  clickTvImage = (e) => {
-    let index = e.currentTarget.value;
-    let id = this.state.tv[index].id;
-    axios.get(this.state.url + `/tv/get/${id}`).then((res) => {
-      console.log(res.data);
-
-      this.props.history.push({
-        pathname: "/TvInfo",
-        state: {
-          newState: res.data,
-          data: this.state.data,
-        },
-      });
-    });
-  };
-
-  deleteMovie = (e) => {
+  const DeleteMovie = (e) => {
+    console.log("deleting movie...");
     let movieId = e.currentTarget.value;
-    console.log("movieidp = " + movieId);
-    axios
-      .delete(this.state.url + "/user/deleteWatchList", {
-        data: {
-          username: this.state.username,
-          movieId: movieId,
-          isMovie: "yes",
-        },
-      })
-      .then(this.refreshPage);
+    let index = -1;
+    let movielist = movieWatchLists[0];
+    for (let i = 0; i < movielist.length; i++) {
+      if (movielist[i].id === parseInt(movieId)) index = i;
+    }
+    let movie1 = movieWatchLists[0];
+    let movie2 = movieWatchLists[1];
+    movie1.splice(index, 1);
+    movie2.splice(index, 1);
+    setMovieWatchLists([movie1, movie2]);
+    dispatch(deleteMovieWatchList(movieId, user.username));
   };
 
-  deleteTv = (e) => {
-    let movieId = e.currentTarget.value;
-    // console.log("movieidp = " + movieId);
-    axios
-      .delete(this.state.url + "/user/deleteWatchList", {
-        data: {
-          username: this.state.username,
-          movieId: movieId,
-          isMovie: "no",
-        },
-      })
-      .then(this.refreshPage);
+  const deleteTv = (e) => {
+    console.log("deleting tv show");
+    let tvId = e.currentTarget.value;
+    let index = -1;
+    let tvlist = tvWatchLists[0];
+    for (let i = 0; i < tvlist.length; i++) {
+      if (tvlist[i].id === parseInt(tvId)) index = i;
+    }
+    let tv1 = tvWatchLists[0];
+    let tv2 = tvWatchLists[1];
+    tv1.splice(index, 1);
+    tv2.splice(index, 1);
+    setTvWatchLists([tv1, tv2]);
+    dispatch(deleteTvWatchList(tvId, user.username));
   };
 
-  refreshPage = () => {
-    window.location.reload();
-  };
-
-  changeToRecommend = () => {
-    this.setState({ watchlist: false });
-    this.setState({ recommend: true });
+  const changeToRecommend = () => {
+    setIsWL(false);
+    setRec(true);
     document.getElementById("recommendButton").style.background = "#346566";
     document.getElementById("watchlistButton").style.background = "";
   };
 
-  changeToWatchlist = () => {
-    this.setState({ recommend: false });
-    this.setState({ watchlist: true });
+  const changeToWatchlist = () => {
+    setRec(false);
+    setIsWL(true);
     document.getElementById("watchlistButton").style.background = "#346566";
     document.getElementById("recommendButton").style.background = "";
   };
 
-  async componentDidMount() {
-    console.log(this.state.username);
-    /*let res3 = await fetch(
-      this.state.url + `/tv/recommendations/${this.state.username}`
-    );
-    let data3 = await res3.json();
-    console.log("data 3 = " + data3);
-    this.recommendations.tvIds = data3[0];
-    this.recommendations.tvTitles = data3[1];
-    this.recommendations.tvImages = data3[2];*/
-    console.log(this.state.url);
-
-    console.log("recommendations =", this.recommendations);
-    let res4 = await fetch(this.state.url + "/tv/popular");
-    let data4 = await res4.json();
-    this.recommendations.popularTvIds = data4[0];
-    this.recommendations.popularTvImages = data4[2];
-    this.recommendations.popularTvTitles = data4[1];
-  }
-
-  signUp = () => {
+  const signUp = () => {
     this.props.history.push({
       pathname: "/signUp",
     });
   };
 
-  render() {
+  {
     let i = -1;
     let j = -1;
     let k = 0;
     let signedIn = true;
-    if (
-      this.state.username === undefined ||
-      this.state.username === null ||
-      this.state.username === ""
-    ) {
+    // console.log(onMovies, onTV);
+    try {
+      if (
+        user.username === undefined ||
+        user.username === null ||
+        user.username === ""
+      ) {
+        signedIn = false;
+      }
+    } catch (error) {
       signedIn = false;
     }
 
     return (
       <div id="ALLITEMS">
         <div id="without-footer">
-          {this.setColor}
-
           <div id="all">
+            {console.log(movieWatchLists)}
             <div>
-              <NavBar id={this.state.data}></NavBar>
+              <NavBar id={user}></NavBar>
             </div>
 
             <div>
@@ -382,7 +210,7 @@ class Home extends Component {
                     <Button
                       color="secondary"
                       variant="contained"
-                      onClick={this.signUp}
+                      onClick={signUp}
                       id="create-account-button"
                     >
                       Create An Account
@@ -395,43 +223,7 @@ class Home extends Component {
                   <div id="popMovies">
                     <h3>Popular Movies Today</h3>
                     <div id="carousel">
-                      <Carousel breakPoints={this.breakPoints}>
-                        {this.state.popularImages.map((image) => (
-                          <div>
-                            <div>
-                              {image !== "-1" ? (
-                                <input
-                                  type="image"
-                                  src={image}
-                                  id="image"
-                                  value={k}
-                                  onClick={this.clickPopImage}
-                                ></input>
-                              ) : (
-                                <img
-                                  id="image"
-                                  src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
-                                  value={k}
-                                ></img>
-                              )}
-                            </div>
-                            <Button
-                              id="movieButton"
-                              color="primary"
-                              variant="contained"
-                              onClick={this.clickPopTitle}
-                              value={k}
-                            >
-                              {this.state.popularTitles[k].length <= 35 &&
-                                this.state.popularTitles[k]}
-                              {this.state.popularTitles[k].length > 35 &&
-                                this.state.popularTitles[k].substring(0, 35) +
-                                  "..."}
-                            </Button>
-                            {console.log(k++)}
-                          </div>
-                        ))}
-                      </Carousel>
+                      <PopularMoviesRec type="popularMovie" history={history} />
                     </div>
                   </div>
                 </center>
@@ -442,55 +234,47 @@ class Home extends Component {
                   <div>
                     <center class="intro">
                       <h1>
-                        Welcome {this.state.data.firstName}{" "}
-                        {this.state.data.lastName}
+                        Welcome {user.firstName} {user.lastName}
                       </h1>
-                      <Button
-                        id="watchlistButton"
-                        onClick={this.changeToWatchlist}
-                      >
+                      <Button id="watchlistButton" onClick={changeToWatchlist}>
                         Watch List
                       </Button>
 
-                      <Button
-                        id="recommendButton"
-                        onClick={this.changeToRecommend}
-                      >
+                      <Button id="recommendButton" onClick={changeToRecommend}>
                         See Recomendations
                       </Button>
                     </center>
-
-                    {this.state.watchlist && (
+                    {isWL && (
                       <div>
                         <div id="watchlist">
-                          <Button
-                            id="showingMovies"
-                            onClick={this.changeToMovie}
-                          >
+                          <Button id="showingMovies" onClick={changeToMovie}>
                             Movies
                           </Button>
-                          <Button id="showingTv" onClick={this.changeToTv}>
+                          <Button id="showingTv" onClick={changeToTv}>
                             TV Shows
                           </Button>
                           <br></br>
                           <br></br>
-                          {this.state.onMovies &&
-                            this.state.movies.map((movie) => (
+                          {onMovies &&
+                            movieWatchLists[0].map((movie) => (
                               <div id="theWatchedMovie">
-                                {this.state.onMovies &&
-                                this.state.images[i + 1] !== "-1" ? (
+                                {console.log("hello my name is sally")}
+                                {movieWatchLists[1][i + 1].url !== "-1" ? (
                                   <input
                                     type="image"
-                                    src={this.state.images[i + 1]}
+                                    src={movieWatchLists[1][i + 1].url}
                                     id="image"
-                                    onClick={this.clickImage}
+                                    onClick={clickImage}
                                     value={i + 1}
                                   />
                                 ) : (
-                                  <img
+                                  <input
                                     id="image"
+                                    type="image"
                                     src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
-                                  ></img>
+                                    onClick={clickTvImage}
+                                    value={i + 1}
+                                  ></input>
                                 )}
 
                                 <center>
@@ -499,7 +283,7 @@ class Home extends Component {
                                     color="primary"
                                     variant="contained"
                                     value={++i}
-                                    onClick={this.getMovie}
+                                    onClick={getMovie}
                                   >
                                     {movie.title.length <= 35 && movie.title}
                                     {movie.title.length > 35 &&
@@ -509,7 +293,7 @@ class Home extends Component {
                                   <Button
                                     id="delete"
                                     value={movie.id}
-                                    onClick={this.deleteMovie}
+                                    onClick={DeleteMovie}
                                     color="primary"
                                     variant="contained"
                                   >
@@ -521,23 +305,26 @@ class Home extends Component {
                               </div>
                             ))}
 
-                          {this.state.onTV &&
-                            this.state.tv.map((t) => (
+                          {onTV &&
+                            tvWatchLists[0].map((t) => (
                               <div id="theWatchedMovie">
                                 {console.log(j)}
-                                {this.state.tvImages[j + 1] !== "-1" ? (
+                                {tvWatchLists[1][j + 1].url !== "-1" ? (
                                   <input
                                     type="image"
-                                    src={this.state.tvImages[j + 1]}
+                                    src={tvWatchLists[1][j + 1].url}
                                     id="image"
-                                    onClick={this.clickTvImage}
+                                    onClick={clickTvImage}
                                     value={j + 1}
                                   />
                                 ) : (
-                                  <img
+                                  <input
+                                    type="image"
                                     id="image"
                                     src="https://www.radiationreport.com/wp-content/uploads/2013/08/no-preview.jpg"
-                                  ></img>
+                                    onClick={clickTvImage}
+                                    value={j + 1}
+                                  ></input>
                                 )}
 
                                 <center>
@@ -546,7 +333,7 @@ class Home extends Component {
                                     color="primary"
                                     variant="contained"
                                     value={++j}
-                                    onClick={this.getTv}
+                                    onClick={getTv}
                                   >
                                     {t.title.length <= 35 && t.title}
                                     {t.title.length > 35 &&
@@ -556,7 +343,7 @@ class Home extends Component {
                                   <Button
                                     id="delete"
                                     value={t.id}
-                                    onClick={this.deleteTv}
+                                    onClick={deleteTv}
                                     color="primary"
                                     variant="contained"
                                   >
@@ -569,16 +356,10 @@ class Home extends Component {
                             ))}
                         </div>
                       </div>
-                    )}
-
-                    {this.state.recommend && (
+                    )}{" "}
+                    {isRec && (
                       <div>
-                        <Recomendation
-                          recommendations={this.recommendations}
-                          url={this.state.url}
-                          userData={this.state.data}
-                          history={this.props.history}
-                        />
+                        <Recomendation history={history} />
                       </div>
                     )}
                   </div>
@@ -590,11 +371,11 @@ class Home extends Component {
           <ParticleBackground id="particles" />
         </div>
         <div id="app-footer">
-          <Footer data={this.state.data} />
+          <Footer data={user} />
         </div>
       </div>
     );
   }
-}
+};
 
 export default Home;

@@ -28,7 +28,15 @@ class About extends Component {
             <div>
               <h2>All Deployments</h2>
               <div>
-                <h4>Version 1.1 - 06/25/21</h4>
+                <h4>Version 1.3 - 07/31/21</h4>
+                <p>
+                  The Codebase now incorporates Redux for better state
+                  management, cleaner code, and overall better performance. Also
+                  includes some pagination when searching for movies.
+                </p>
+              </div>
+              <div>
+                <h4>Version 1.2 - 06/25/21</h4>
                 <p>
                   Users can now search TV shows, get customed recommendations
                   based on their watchlist for both movies and shows. Users can
@@ -37,7 +45,7 @@ class About extends Component {
                 </p>
               </div>
               <div>
-                <h4>Version 1.0 - 06/10/21</h4>
+                <h4>Version 1.1 - 06/10/21</h4>
                 <p>
                   Users had access to searching movies, adding to watch/watched
                   lists, could rate and give comments for watched movies.{" "}

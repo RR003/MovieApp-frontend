@@ -16,7 +16,7 @@ class Friends extends Component {
     searchFriend: "",
     url: "",
     message: "",
-    username: this.props.location.state.username,
+    username: "",
     friends: [],
     friendRequest: [],
     movieIds: [],
@@ -51,7 +51,12 @@ class Friends extends Component {
     let authData = await response.json();
     if (authData.url === "valid") {
       this.setState({ showFriends: true });
+      this.setState({ username: this.props.location.state.username });
       show = true;
+    } else {
+      sessionStorage.clear();
+      localStorage.clear();
+      window.location.href = "/";
     }
 
     // let auth = await fetch(url + "/user/test");
