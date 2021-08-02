@@ -15,7 +15,7 @@ import Container from "@material-ui/core/Container";
 import GoogleLogin from "react-google-login";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { signIn, signInWithGoogle } from "../../actions/auth";
+import { signIn, signup, signInWithGoogle } from "../../actions/auth";
 import { useHistory } from "react-router-dom";
 require("dotenv").config();
 
@@ -68,7 +68,9 @@ const SignIn = () => {
     dispatch(signInWithGoogle(id_token, history));
   };
 
-  const onFailure = (res) => {};
+  const onFailure = (res) => {
+    console.log("this sadly didnt work");
+  };
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -90,7 +92,7 @@ const SignIn = () => {
       .then((res) => {
         // console.log(res);
         let body = res.data;
-
+        console.log(body);
         if (body.url.length > 30) {
           let token = body.url;
           sessionStorage.setItem("token", token);
