@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../NavBar.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -71,6 +72,8 @@ const NavBar = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  let realToken = useSelector((state) => state.auth);
+  localStorage.setItem("token", realToken[0]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

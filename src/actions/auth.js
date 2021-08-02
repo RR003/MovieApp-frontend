@@ -13,7 +13,7 @@ export function signIn(formData, router) {
       if (token.length > 30) {
         localStorage.setItem("token", token);
         sessionStorage.setItem("username", formData.username);
-        dispatch({ type: "AUTH", data });
+        dispatch({ type: "AUTH", payload: data });
         // let { data2 } = dispatch(getUserInfo(formData.username));
         // console.log("login data is right here = " + data2);
         dispatch(getUserInfo(sessionStorage.getItem("username"))).then(
