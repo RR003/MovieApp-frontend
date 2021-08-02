@@ -3,14 +3,14 @@ import NavBar from "../NavBar";
 import axios from "axios";
 import "./SignUp.css";
 import ParticleBackground from "../ParticleBackground";
-import Avatar from "@material-ui/core/Avatar";
+
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import GroupIcon from "@material-ui/icons/Group";
+
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+
 import Container from "@material-ui/core/Container";
 
 const SignUp = (props) => {
@@ -118,81 +118,84 @@ const SignUp = (props) => {
                     Create An Account
                   </Typography>
                   <br></br>
-                  <form noValidate id="signinform">
-                    <Grid container spacing={2}>
-                      <Grid item>
-                        <TextField
-                          variant="filled"
-                          required
-                          id="firstName"
-                          value={firstName}
-                          label="Enter First Name"
-                          name="first name"
-                          onChange={handleFirstNameChange}
-                        />
+                  <center>
+                    <form noValidate id="signinform">
+                      <Grid container spacing={1}>
+                        <Grid item id="suinput">
+                          <TextField
+                            variant="filled"
+                            required
+                            id="firstName"
+                            value={firstName}
+                            label="Enter First Name"
+                            name="first name"
+                            onChange={handleFirstNameChange}
+                          />
+                        </Grid>
+                        <Grid item id="suinput">
+                          <TextField
+                            variant="filled"
+                            required
+                            id="lastName"
+                            value={lastName}
+                            label="Enter Last Name"
+                            name="last name"
+                            onChange={handleLastNameChange}
+                          />
+                        </Grid>
+                        <Grid item id="suinput">
+                          <TextField
+                            variant="filled"
+                            required
+                            id="email"
+                            value={email}
+                            type="email"
+                            label="Enter Email"
+                            name="email"
+                            onChange={handleEmailChange}
+                          />
+                        </Grid>
+                        <Grid item id="suinput">
+                          <TextField
+                            variant="filled"
+                            required
+                            id="username"
+                            value={username}
+                            label="Enter Username"
+                            name="username"
+                            onChange={handleUsernameChange}
+                          />
+                        </Grid>
+                        <Grid item id="suinput">
+                          <TextField
+                            variant="filled"
+                            required
+                            id="password"
+                            value={password}
+                            label="Enter Password"
+                            type="password"
+                            onChange={handlePasswordChange}
+                          />
+                        </Grid>
+                        <Grid item id="suinput">
+                          <TextField
+                            variant="filled"
+                            required
+                            id="confirmpassword"
+                            value={confirmPassword}
+                            label="Confirm Password"
+                            type="password"
+                            onChange={handleConfirmPasswordChange}
+                          />
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <TextField
-                          variant="filled"
-                          required
-                          id="lastName"
-                          value={lastName}
-                          label="Enter Last Name"
-                          name="last name"
-                          onChange={handleLastNameChange}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          variant="filled"
-                          required
-                          id="email"
-                          value={email}
-                          type="email"
-                          label="Enter Email"
-                          name="email"
-                          onChange={handleEmailChange}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          variant="filled"
-                          required
-                          id="username"
-                          value={username}
-                          label="Enter Username"
-                          name="username"
-                          onChange={handleUsernameChange}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          variant="filled"
-                          required
-                          id="password"
-                          value={password}
-                          label="Enter Password"
-                          type="password"
-                          onChange={handlePasswordChange}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          variant="filled"
-                          required
-                          id="confirmpassword"
-                          value={confirmPassword}
-                          label="Confirm Password"
-                          type="password"
-                          onChange={handleConfirmPasswordChange}
-                        />
-                      </Grid>
-                    </Grid>
-                    <br></br>
-                    <Typography style={{ margin: 7 }} variant="body1">
-                      {message}
-                    </Typography>
-                  </form>
+                      <br></br>
+                      <Typography style={{ margin: 7 }} variant="body1">
+                        {message}
+                      </Typography>
+                    </form>
+                  </center>
+
                   <Button
                     // type="submit"
                     id="signupbutton"

@@ -13,7 +13,7 @@ export const getMovieImage = (movieId) => API.get(`/movie/getImage/${movieId}`);
 export const getTvInfo = (tvId) => API.get(`/tv/get/${tvId}`);
 export const getTvImage = (tvId) => API.get(`tv/getImage/${tvId}`);
 export const gettingPopularMovies = (fakeParam) => {
-  API.get("/movie/popularMovies").then((res) => console.log(res));
+  API.get("/movie/popularMovies");
 };
 
 export const deleteMovieWatchList = (movieId, username) => {

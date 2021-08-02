@@ -73,7 +73,6 @@ const NavBar = (props) => {
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
-    console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
@@ -99,7 +98,7 @@ const NavBar = (props) => {
     if (
       data.username !== undefined &&
       data.username !== null &&
-      sessionStorage.getItem("token") !== null
+      localStorage.getItem("token") !== null
     ) {
       // console.log("person is signed in");
       isSigninHidden = true;
@@ -122,13 +121,9 @@ const NavBar = (props) => {
   };
 
   const getMovieFunction = () => {
-    console.log("getting movie");
     axios
       .get(url + `/movie/${movieTitle}/1`)
       .then((res) => {
-        console.log(res);
-        console.log(JSON.stringify(res.data[0]));
-        console.log(JSON.stringify(res.data[1]));
         localStorage.setItem("list", JSON.stringify(res.data[0]));
         localStorage.setItem("images", JSON.stringify(res.data[1]));
         localStorage.setItem("total_pages", JSON.stringify(res.data[2][0]));
@@ -154,7 +149,7 @@ const NavBar = (props) => {
     localStorage.clear();
     props = "";
     sessionStorage.clear();
-    console.log("refresh page");
+
     window.location.href = "/";
   }
 

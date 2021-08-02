@@ -15,9 +15,7 @@ export const goToThisMovie = (movieId, router) => async () => {
         ourRating: rating.data,
       },
     });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const goToThisTv = (tvId, router) => async () => {
@@ -33,7 +31,5 @@ export const goToThisTv = (tvId, router) => async () => {
         ourRating: rating.data,
       },
     });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

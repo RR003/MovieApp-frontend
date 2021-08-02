@@ -6,11 +6,8 @@ export const getUserInfo = (username) => async (dispatch) => {
     dispatch({ type: "FETCH_USER_DATA", payload: data });
     // console.log(data);
     return data;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
-console.log();
 
 export const addToWatchListMovie = (username, movieId) => async (dispatch) => {
   try {
@@ -20,9 +17,7 @@ export const addToWatchListMovie = (username, movieId) => async (dispatch) => {
     let data = [movieInfo.data, movieImage.data];
     dispatch({ type: "ADD_TO_WATCH_LIST_MOVIE", payload: movieId });
     dispatch({ type: "ADD_TO_WL_MOVIE", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const addToWatchListTv = (username, tvId) => async (dispatch) => {
@@ -33,9 +28,7 @@ export const addToWatchListTv = (username, tvId) => async (dispatch) => {
     let data = [tvInfo.data, tvImage.data];
     dispatch({ type: "ADD_TO_WATCH_LIST_TV", payload: tvId });
     dispatch({ type: "ADD_TO_WL_TV", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const editWatchedList = (username, movieId, rating, comment) => async (
@@ -49,14 +42,11 @@ export const editWatchedList = (username, movieId, rating, comment) => async (
       comment: comment,
     };
     dispatch({ type: "EDIT_WATCHED_LIST", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const addToWatchedList = (username, id, isMovie) => async (dispatch) => {
   try {
-    console.log(username, id, isMovie);
     await api.addToWatchedList(username, id, isMovie);
     dispatch(getUserInfo(username));
   } catch (error) {}

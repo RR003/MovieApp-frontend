@@ -1,7 +1,7 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "./NavBar";
-import axios from "axios";
+
 import "../MovieInfo.css";
 import Button from "@material-ui/core/Button";
 import ParticleBackground from "./ParticleBackground";
@@ -32,7 +32,6 @@ const MovieInfo = (props) => {
         document.getElementById("watch").style.visibility = "hidden";
       } else {
         for (let i = 0; i < user2[0].watchedList.length; i++) {
-          console.log(user2[0].watchedList[i].movieId);
           if (user2[0].watchedList[i].movieId === movieInfo.id) {
             setMessage("You already watched this movie");
             document.getElementById("watch").style.visibility = "hidden";

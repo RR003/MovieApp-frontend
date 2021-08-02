@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "./NavBar";
 import axios from "axios";
@@ -12,7 +12,6 @@ import { checkToken } from "../actions/auth";
 const WatchedList = () => {
   const [user, setUser] = useState(useSelector((state) => state.user[0]));
   const dispatch = useDispatch();
-  console.log(user);
 
   const [showRating, setShowRating] = useState(false);
   const [movieTitles, setMovieTitles] = useState([]);
@@ -24,7 +23,7 @@ const WatchedList = () => {
     let tempList = [];
     try {
       let isValid = await dispatch(checkToken());
-      console.log(isValid);
+
       if (isValid === "valid") {
         for (let x = 0; x < user.watchedList.length; x++) {
           if (user.watchedList[x].isMovie === "yes") {
@@ -45,7 +44,7 @@ const WatchedList = () => {
 
   const clickedGiveRating = (event) => {
     let index = event.target.value;
-    console.log(index);
+
     setShowRating(true);
     setRatingId(user.watchedList[index - 1].movieId);
     setRatingTitle(movieTitles[index - 1]);

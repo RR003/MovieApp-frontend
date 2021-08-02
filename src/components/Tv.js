@@ -15,7 +15,6 @@ class Tv extends Component {
       <div>
         {this.state.tv.map((t) => (
           <div id="theWatchedMovie">
-            {console.log(j)}
             {this.state.tvImages[j + 1] !== "-1" ? (
               <input
                 type="image"

@@ -57,12 +57,12 @@
 }
 
 .theWLButton {
-  background: #346566;
+  background: #3b5a5a;
 }
 
 #carousel {
   padding-top: 3em;
-  background-color: #287588;
+  background-color: #394b50;
   border: ridge;
   border-radius: 2em;
 }
@@ -114,4 +114,12 @@
   position: relative;
   height: 80px;
   background-color: rgb(238, 235, 230);
+}
+
+#info {
+  font-family: "copperplate";
+}
+
+#suinput {
+  display: grid;
 }

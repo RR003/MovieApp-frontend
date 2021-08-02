@@ -37,13 +37,13 @@ class Friends extends Component {
 
   async componentDidMount() {
     let url = process.env.REACT_APP_URL;
-    console.log("url = " + url);
+
     this.setState({ url: url });
     let show = false;
     let settings = {
       method: "GET",
       headers: {
-        token: sessionStorage.getItem("token"),
+        token: localStorage.getItem("token"),
       },
     };
 
@@ -99,7 +99,6 @@ class Friends extends Component {
           isVerified: "no",
         })
         .then((res) => {
-          console.log(res.data.url);
           this.setState({ message: res.data.url });
         });
     }
@@ -120,7 +119,7 @@ class Friends extends Component {
   deleteFriendRequest = (e) => {
     let index = e.currentTarget.value;
     let username = this.state.friendRequest[index];
-    console.log(username);
+
     axios
       .delete(this.state.url + "/user/deleteFriendRequest", {
         data: {
@@ -134,9 +133,9 @@ class Friends extends Component {
 
   clickImage = (e) => {
     let index = e.currentTarget.value;
-    console.log(index);
+
     let id = this.state.movieIds[index];
-    console.log(id);
+
     axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
       this.props.history.push({
         pathname: "/movieInfo",
@@ -150,9 +149,9 @@ class Friends extends Component {
 
   clickTvImage = (e) => {
     let index = e.currentTarget.value;
-    console.log(index);
+
     let id = this.state.tvIds[index];
-    console.log(id);
+
     axios.get(this.state.url + `/tv/get/${id}`).then((res) => {
       this.props.history.push({
         pathname: "/tvInfo",
@@ -166,9 +165,9 @@ class Friends extends Component {
 
   getMovie = (e) => {
     let index = e.currentTarget.value;
-    console.log(index);
+
     let id = this.state.movieIds[index];
-    console.log(id);
+
     axios.get(this.state.url + `/movie/get/${id}`).then((res) => {
       this.props.history.push({
         pathname: "/movieInfo",
@@ -182,9 +181,9 @@ class Friends extends Component {
 
   getTv = (e) => {
     let index = e.currentTarget.value;
-    console.log(index);
+
     let id = this.state.tvIds[index];
-    console.log(id);
+
     axios.get(this.state.url + `/tv/get/${id}`).then((res) => {
       this.props.history.push({
         pathname: "/tvInfo",
@@ -204,7 +203,6 @@ class Friends extends Component {
     return (
       <div id="ALLITEMS">
         <div id="without-footer">
-          {console.log(this.state)}
           {!this.state.showFriends && (
             <div>
               <h2>Invalid Resource!</h2>

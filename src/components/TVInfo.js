@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "./NavBar";
 import "../MovieInfo.css";
@@ -18,7 +18,6 @@ const TVInfo = (props) => {
   const commentsAndRatings = props.location.state.commentAndRatings;
   const ourRating = props.location.state.ourRating;
   const dispatch = useDispatch();
-  console.log(tvInfo);
 
   const [message, setMessage] = useState("");
 
@@ -33,7 +32,6 @@ const TVInfo = (props) => {
         document.getElementById("watch").style.visibility = "hidden";
       } else {
         for (let i = 0; i < user2[0].watchedList.length; i++) {
-          console.log(user2[0].watchedList[i].movieId);
           if (user2[0].watchedList[i].movieId === tvInfo.id) {
             setMessage("You already watched this show");
             document.getElementById("watch").style.visibility = "hidden";

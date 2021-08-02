@@ -13,13 +13,11 @@ const tvWatchlist = (tvWatchlist = [], action) => {
 
     case "DELETE_TV_WATCH_LIST":
       let index = -1;
-      console.log(action.payload);
+
       for (let i = 0; i < tvWatchlist[0].length; i++) {
         if (tvWatchlist[0][i].id === parseInt(action.payload)) index = i;
-        else console.log(tvWatchlist[0][i].id);
       }
 
-      console.log(index);
       tvWatchlist[0].splice(index, 1);
       tvWatchlist[1].splice(index, 1);
       // console.log(movieWatchlist);

@@ -16,7 +16,6 @@ const PopularMovies = (state) => {
   const dispatch = useDispatch();
   const recMovies = useSelector((state) => state.recMovies);
   const recTv = useSelector((state) => state.recTv);
-  console.log(state.history);
 
   const [popularImages, setPopularImages] = useState([]);
   const [popularTitles, setPopularTitles] = useState([]);
@@ -26,7 +25,6 @@ const PopularMovies = (state) => {
     if (state.type === "popularMovie") {
       // console.log("iufehgjlwihlj");
       dispatch(getPopularMovies()).then((res) => {
-        console.log("wtf u gotta work");
         if (res !== undefined) {
           setPopularIds(res[0]);
           setPopularTitles(res[1]);
@@ -75,7 +73,7 @@ const PopularMovies = (state) => {
 
   let k = 0;
   return (
-    <div>
+    <div id="carousel">
       <Carousel breakPoints={breakPoints}>
         {popularImages.map((image) => (
           <div>

@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
 import "../Movies.css";
@@ -31,7 +31,6 @@ const Movies = () => {
   const [tvCurrentPage, setTvCurrentPage] = useState(
     parseInt(localStorage.getItem("tvPageNumber"))
   );
-  console.log(tvCurrentPage);
   const [tvTotalPages, setTvTotalPages] = useState("");
   const [button, setButton] = useState([]);
   const [tvButton, setTvButton] = useState([]);
@@ -69,7 +68,6 @@ const Movies = () => {
   const clickedButton = (e) => {
     let index = e.currentTarget.value;
     axios.get(url + `/movie/${movie}/${index}`).then((res) => {
-      console.log(res);
       setMovies(res.data[0]);
       setImages(res.data[1]);
       setCurrentPage(parseInt(index));
@@ -81,7 +79,6 @@ const Movies = () => {
     let index = e.currentTarget.value;
 
     axios.get(url + `/tv/${movie}/${index}`).then((res) => {
-      console.log(res);
       setTvList(res.data[0]);
       setTvImages(res.data[1]);
       setCurrentPage(parseInt(index));
@@ -109,7 +106,6 @@ const Movies = () => {
     let index = event.target.value;
     localStorage.setItem("dataForMovieInfo", data);
     axios.get(url + `/tv/${movie}/${tvCurrentPage}/${index}`).then((res) => {
-      console.log(res);
       dispatch(goToThisTv(res.data.id, history));
       // console.log(this.state.username)
       /*this.props.history.push({
@@ -123,7 +119,7 @@ const Movies = () => {
   };
 
   const getTv = (e) => {
-    let index = e.currentTarget.value;
+    let index = parseInt(e.currentTarget.value);
 
     localStorage.setItem("dataForMovieInfo", data);
     axios.get(url + `/tv/${movie}/${tvCurrentPage}/{${index}`).then((res) => {
@@ -170,13 +166,11 @@ const Movies = () => {
         }
       }
     }
-    console.log(pages);
+
     setTvButton(pages);
   };
 
   const createButtons = (total_pages, currentPage) => {
-    console.log(total_pages, currentPage);
-    console.log(total_pages, currentPage);
     let pages = [];
 
     if (total_pages < 6) {
@@ -206,7 +200,7 @@ const Movies = () => {
         }
       }
     }
-    console.log(pages);
+
     setButton(pages);
   };
 
@@ -254,7 +248,8 @@ const Movies = () => {
             {showMovies && showMov && (
               <div>
                 <h3>
-                  {movies.length} Movie Search Results for "{movie}"
+                  {totalPages > 1 ? 20 * totalPages + "+" : movies.length} Movie
+                  Search Results for "{movie}"
                 </h3>
                 {movies.map((movie) => (
                   <div id="theMovies">
@@ -332,7 +327,10 @@ const Movies = () => {
           <center>
             {showMovies && showTv && (
               <div>
-                <h3>{tvList.length} TV Show Search Results</h3>
+                <h3>
+                  {tvTotalPages > 1 ? 20 * tvTotalPages + "+" : tvList.length}{" "}
+                  TV Show Search Results
+                </h3>
                 {tvList.map((tv) => (
                   <div id="theMovies">
                     <div>

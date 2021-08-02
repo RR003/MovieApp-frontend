@@ -17,18 +17,26 @@ const Recomendation = (state) => {
     <div>
       <div>
         <h3>Movie Recomendations Customed For You</h3>
-        <PopularMoviesRec type="movieRec" history={state.history} />
+        <PopularMoviesRec
+          type="movieRec"
+          history={state.history}
+          id="carousel"
+        />
       </div>
 
       <br></br>
       <div>
         <h3>TV Shows Recomendations Customed For You</h3>
-        <PopularMoviesRec type="tvRec" history={state.history} />
+        <PopularMoviesRec type="tvRec" history={state.history} id="carousel" />
       </div>
 
       <div>
         <h3>Popular Movies Today</h3>
-        <PopularMoviesRec type="popularMovie" history={state.history} />
+        <PopularMoviesRec
+          type="popularMovie"
+          history={state.history}
+          id="carousel"
+        />
       </div>
     </div>
   );

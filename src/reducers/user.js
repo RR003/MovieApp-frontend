@@ -1,8 +1,6 @@
 const user = (user = [], action) => {
   switch (action.type) {
     case "FETCH_USER_DATA":
-      console.log("i am here");
-      console.log(action.payload);
       // console.log(action.payload);
       // sessionStorage.setItem("user", JSON.stringify(action.payload));
       return [action.payload];
@@ -44,11 +42,11 @@ const user = (user = [], action) => {
     case "EDIT_WATCHED_LIST":
       let watchedlist = user[0].watchedList;
       let findIndex = -1;
-      console.log(action.payload);
+
       for (let i = 0; i < watchedlist.length; i++) {
         if (watchedlist[i].movieId === action.payload.id) findIndex = i;
       }
-      console.log(findIndex);
+
       watchedlist[findIndex].comment = action.payload.comment;
       watchedlist[findIndex].rating = action.payload.rating;
 

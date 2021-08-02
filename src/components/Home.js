@@ -1,23 +1,19 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import NavBar from "./NavBar";
-import axios from "axios";
+
 import "../Home.css";
-import ParticleBackground from "./ParticleBackground";
+
 import Button from "@material-ui/core/Button";
 import Recomendation from "./Recomendation";
 import Footer from "./Footer";
-import Carousel from "react-elastic-carousel";
+
 import { useDispatch, useSelector } from "react-redux";
-import { getUserInfo } from "../actions/data";
-import {
-  deleteMovieWatchList,
-  deleteTvWatchList,
-  getPopularMovies,
-} from "../actions/movie";
+
+import { deleteMovieWatchList, deleteTvWatchList } from "../actions/movie";
 import { goToThisMovie, goToThisTv } from "../actions/recs";
-import { getMovieInfo, getMovieImage } from "../actions/movie";
+
 import PopularMoviesRec from "./AllRecs";
-import movieWatchlist from "../reducers/movieWatchlist";
+
 import { useHistory } from "react-router-dom";
 import { checkToken } from "../actions/auth";
 
@@ -30,15 +26,15 @@ const Home = (props) => {
   ];
 
   const dispatch = useDispatch();
-  if (sessionStorage.getItem("token") !== null) dispatch(checkToken());
+  if (localStorage.getItem("token") !== null) dispatch(checkToken());
 
   const history = useHistory();
 
   const user2 = useSelector((state) => state.user);
+
   const [movieWatchLists, setMovieWatchLists] = useState(
     useSelector((state) => state.movieWatchlist)
   );
-  console.log(movieWatchLists);
 
   const [tvWatchLists, setTvWatchLists] = useState(
     useSelector((state) => state.tvWatchlist)
@@ -46,7 +42,6 @@ const Home = (props) => {
 
   let user = [];
   try {
-    console.log(user2);
     if (user2.length > 0) {
       user = user2[0];
     } else {
@@ -56,7 +51,6 @@ const Home = (props) => {
   } catch (error) {
     localStorage.clear();
     sessionStorage.clear();
-    console.log(user2);
   }
 
   const [isWL, setIsWL] = useState(true);
@@ -78,11 +72,9 @@ const Home = (props) => {
   };
 
   const changeToTv = () => {
-    console.log("changing to tv");
     setOnMovies(false);
     setOnTV(true);
 
-    console.log(onMovies, onTV);
     document.getElementById("showingTv").style.background = "coral";
     document.getElementById("showingMovies").style.background = "";
   };
@@ -94,7 +86,6 @@ const Home = (props) => {
   };
 
   const getTv = (e) => {
-    console.log(user.tvWatchList);
     let index = e.currentTarget.value;
     let id = user.tvWatchList[index];
     dispatch(goToThisTv(id, history));
@@ -102,7 +93,7 @@ const Home = (props) => {
 
   const clickImage = (e) => {
     let index = e.currentTarget.value;
-    console.log(user.tvWatchList);
+
     let id = user.watchList[index];
     dispatch(goToThisMovie(id, history));
   };
@@ -110,13 +101,12 @@ const Home = (props) => {
   const clickTvImage = (e) => {
     let index = e.currentTarget.value;
     if (index === undefined) index = e.target.value;
-    console.log(e);
+
     let id = user.tvWatchList[index];
     dispatch(goToThisTv(id, history));
   };
 
   const DeleteMovie = (e) => {
-    console.log("deleting movie...");
     let movieId = e.currentTarget.value;
     let index = -1;
     let movielist = movieWatchLists[0];
@@ -132,7 +122,6 @@ const Home = (props) => {
   };
 
   const deleteTv = (e) => {
-    console.log("deleting tv show");
     let tvId = e.currentTarget.value;
     let index = -1;
     let tvlist = tvWatchLists[0];
@@ -189,7 +178,6 @@ const Home = (props) => {
       <div id="ALLITEMS">
         <div id="without-footer">
           <div id="all">
-            {console.log(movieWatchLists)}
             <div>
               <NavBar id={user}></NavBar>
             </div>
@@ -221,8 +209,8 @@ const Home = (props) => {
                     </p>
                   </div>
                   <div id="popMovies">
-                    <h3>Popular Movies Today</h3>
-                    <div id="carousel">
+                    <h3>Check out some of our popular movies today</h3>
+                    <div>
                       <PopularMoviesRec type="popularMovie" history={history} />
                     </div>
                   </div>
@@ -233,7 +221,7 @@ const Home = (props) => {
                 <center>
                   <div>
                     <center class="intro">
-                      <h1>
+                      <h1 id="info">
                         Welcome {user.firstName} {user.lastName}
                       </h1>
                       <Button id="watchlistButton" onClick={changeToWatchlist}>
@@ -258,7 +246,6 @@ const Home = (props) => {
                           {onMovies &&
                             movieWatchLists[0].map((movie) => (
                               <div id="theWatchedMovie">
-                                {console.log("hello my name is sally")}
                                 {movieWatchLists[1][i + 1].url !== "-1" ? (
                                   <input
                                     type="image"
@@ -308,7 +295,6 @@ const Home = (props) => {
                           {onTV &&
                             tvWatchLists[0].map((t) => (
                               <div id="theWatchedMovie">
-                                {console.log(j)}
                                 {tvWatchLists[1][j + 1].url !== "-1" ? (
                                   <input
                                     type="image"
@@ -367,8 +353,6 @@ const Home = (props) => {
               )}
             </div>
           </div>
-
-          <ParticleBackground id="particles" />
         </div>
         <div id="app-footer">
           <Footer data={user} />

@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import NavBar from "./NavBar";
 import "../Rating.css";
 import axios from "axios";
@@ -66,7 +66,7 @@ const Ratings = (props) => {
     comment: "",
   };
   handleSubmit = () => {
-    console.log("Rating = " + this.state.rating);
+  
     let url = process.env.REACT_APP_URL;
     setTimeout(
       axios.put(url + "/user/updateWatchedList", {

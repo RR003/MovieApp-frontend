@@ -16,7 +16,6 @@ const movieWatchlist = (movieWatchlist = [], action) => {
       let index = -1;
       for (let i = 0; i < movieWatchlist[0].length; i++) {
         if (movieWatchlist[0][i].id === parseInt(action.payload)) index = i;
-        else console.log(movieWatchlist[0][i].id);
       }
       // console.log(index);
       movieWatchlist[0].splice(index, 1);

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import NavBar from "../NavBar";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -18,7 +18,6 @@ const EnterEmail = (props) => {
 
   const onSubmit = () => {
     axios.post(urls + "/user/forgotPassword", { url: email }).then((res) => {
-      console.log(res.data);
       window.location.href = "/verify";
     });
   };

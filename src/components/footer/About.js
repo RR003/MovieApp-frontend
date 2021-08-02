@@ -6,9 +6,7 @@ class About extends Component {
   constructor(props) {
     super(props);
   }
-  async componentDidMount() {
-    console.log(this.props.location.state.props.data);
-  }
+  async componentDidMount() {}
   state = {};
   render() {
     return (
